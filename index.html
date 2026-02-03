@@ -507,7 +507,13 @@
             to say hi, do send me a message and let's chat.
           </p>
         </div>
-        <form class="contact-forms" id="contactForm" novalidate>
+        <form
+          class="contact-forms"
+          method="POST"
+          action="https://script.google.com/macros/s/AKfycbybAcL6-rBw1kTslaCFrMA9xvr20ntQSUjv6aWC1Z56OdliLyh2frW3GQnUrIM27aSDRQ/exec"
+          target="hidden_iframe"
+          onsubmit="submitted=true;"
+        >
           <input type="hidden" name="form-name" value="contact" />
 
           <!-- Honeypot (spam protection) -->
@@ -568,6 +574,11 @@
   <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
     crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+  <iframe name="hidden_iframe" style="display:none;"></iframe>
+
+  <script>
+    let submitted = false;
+  </script>
 </body>
 
 </html>
