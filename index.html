@@ -508,11 +508,11 @@
           </p>
         </div>
         <form
+          id="contactForm"
           class="contact-forms"
           method="POST"
           action="https://script.google.com/macros/s/AKfycbxRIeM7fWb_G-FttaOgExrboAtFLCJWhkHTRG8te6WcFiiTv76lfnUnMbTfuxbkH4Pi/exec"
           target="hidden_iframe"
-          onsubmit="submitted=true;"
         >
           <input type="hidden" name="form-name" value="contact" />
 
@@ -534,6 +534,10 @@
           <div class="input-box">
             <textarea name="message" cols="30" rows="10" autocomplete="off" placeholder="Message" required></textarea>
           </div>
+
+          <input type="hidden" name="formGoogleSheetName" value="responses">
+          <input type="hidden" name="formGoogleSendEmail" value="muhammedresvan@gmail.com">
+
 
           <div class="btn">
             <button type="submit" id="submitButton" class="btn-submit">
@@ -569,15 +573,12 @@
     </footer>
   </main>
   <iframe name="hidden_iframe" style="display:none;"></iframe>
-  <script>
-    let submitted = false;
-  </script>
-  <script src="script.js"></script>
-  <!--jquery-->
-  <script src="Validate-Form.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+
+  <script src="script.js"></script>
+  <script src="Validate-Form.js"></script>
+
 </body>
 
 </html>
