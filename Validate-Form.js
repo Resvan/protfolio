@@ -63,44 +63,26 @@ $(document).ready(function () {
     },
 
     submitHandler: function (form) {
-      sendContactForm(form);
+      // ✅ NORMAL FORM SUBMIT (NO AJAX)
+      $("#submitButton").prop("disabled", true).text("Sending...");
+      form.submit();
     },
   });
+
 });
 
-// ---- AJAX SUBMIT ----
-function sendContactForm(form) {
-  const $form = $(form);
-  const $button = $("#submitButton");
-  const $status = $("#formStatus");
+/* ---- SUCCESS HANDLER (Hidden iframe load) ---- */
+window.addEventListener("load", function () {
+  const iframe = document.querySelector('iframe[name="hidden_iframe"]');
+  if (!iframe) return;
 
-  // Honeypot check
-  if ($form.find('input[name="website"]').val()) {
-    return;
-  }
+  iframe.addEventListener("load", function () {
+    $("#contactForm")[0].reset();
+    $("#submitButton").prop("disabled", false).text("Send Message");
 
-  $button.prop("disabled", true).text("Sending...");
-  $status.hide();
-
-  $.ajax({
-    url: "https://script.google.com/macros/s/AKfycbybAcL6-rBw1kTslaCFrMA9xvr20ntQSUjv6aWC1Z56OdliLyh2frW3GQnUrIM27aSDRQ/exec",
-    method: "POST",
-    data: $form.serialize(),
-    success: function () {
-      $form.trigger("reset");
-      $status
-        .text("✅ Message sent successfully!")
-        .css("color", "green")
-        .show();
-    },
-    error: function () {
-      $status
-        .text("❌ Something went wrong. Please try again.")
-        .css("color", "red")
-        .show();
-    },
-    complete: function () {
-      $button.prop("disabled", false).text("Send Message");
-    },
+    $("#formStatus")
+      .text("✅ Message sent successfully!")
+      .css("color", "green")
+      .show();
   });
-}
+});
