@@ -6,17 +6,20 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="keywords" content="Muhammed Resvan K, Resvan, Muhammed Resvan, Kerala, Software developer in Kerala, React Developer, Next JS Developer" />
+  <meta name="keywords"
+    content="Muhammed Resvan K, Resvan, Muhammed Resvan, Kerala, Software developer in Kerala, React Developer, Next JS Developer" />
   <meta name="author" content="Muhammed Resvan" />
   <link rel="canonical" href="https://resvan.in/" />
   <meta name="google-site-verification" content="_fLcHiG0g5VxqX7UWz6gD9HKPqJ5C1ekgJRkys6fb9I" />
   <title>Muhammed Resvan K - Software Engineer @ Salesdock</title>
-  <meta name="description" content="Muhammed Resvan is a MERN Stack Developer based in Malappuram, Kerala, India. Specializing in React, Node.js, Next.js, MongoDB, and more." />
+  <meta name="description"
+    content="Muhammed Resvan is a MERN Stack Developer based in Malappuram, Kerala, India. Specializing in React, Node.js, Next.js, MongoDB, and more." />
   <link rel="icon" href="logo.svg" />
   <link rel="stylesheet" href="style.css" />
 
   <meta property="og:title" content="Muhammed Resvan K - MERN Stack Developer" />
-  <meta property="og:description" content="Muhammed Resvan is a MERN Stack Developer based in Malappuram, Kerala, India." />
+  <meta property="og:description"
+    content="Muhammed Resvan is a MERN Stack Developer based in Malappuram, Kerala, India." />
   <meta property="og:image" content="https://resvan.in/logo.svg" />
   <meta property="og:url" content="https://resvan.in" />
   <meta property="og:type" content="website" />
@@ -27,11 +30,8 @@
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 
   <!-- Link to Font Awesome CSS -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    crossorigin="anonymous"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    crossorigin="anonymous" />
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SMPFVLGNW2"></script>
@@ -63,8 +63,8 @@
 </head>
 
 <body>
-<!--  head tag  -->
-    <!-- <script type="text/javascript">
+  <!--  head tag  -->
+  <!-- <script type="text/javascript">
     (function (c, l, a, r, i, t, y) {
       c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
       t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
@@ -83,7 +83,7 @@
     })(window, document, 'script', 'dataLayer', 'GTM-KXXWV822');</script> -->
   <!-- End Google Tag Manager -->
   <!-- end head tag  -->
-  
+
   <!-- Google Tag Manager (noscript) -->
   <!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KXXWV822" height="0" width="0"
       style="display:none;visibility:hidden"></iframe></noscript> -->
@@ -201,9 +201,9 @@
                 <td>
                   <span class="title">Expanding Horizons: My Journey with Salesdock</span>
                   <strong><br />
-                  <a href="https://salesdock.com/" target="_blank" class="no-select">
-                  @Salesdock
-                  </a>
+                    <a href="https://salesdock.com/" target="_blank" class="no-select">
+                      @Salesdock
+                    </a>
                   </strong>
                   <div class="time">Feb 2025</div>
                 </td>
@@ -257,7 +257,8 @@
           </table>
         </div>
         <div class="col-right">
-          <img class="avatar" src="./Images/avatar.png" alt="Muhammed Resvan at work as a MERN Stack Developer" loading="lazy" />
+          <img class="avatar" src="./Images/avatar.png" alt="Muhammed Resvan at work as a MERN Stack Developer"
+            loading="lazy" />
         </div>
       </div>
     </section>
@@ -506,26 +507,38 @@
             to say hi, do send me a message and let's chat.
           </p>
         </div>
-        <form class="contact-forms" action="" name="contact">
+        <form class="contact-forms" id="contactForm" novalidate>
           <input type="hidden" name="form-name" value="contact" />
+
+          <!-- Honeypot (spam protection) -->
+          <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off" />
+
           <div class="input-box">
-            <input type="text" name="name" autocomplete="off" spellcheck="false" placeholder="Name:" required />
+            <input type="text" name="name" autocomplete="off" spellcheck="false" placeholder="Name" required />
           </div>
+
           <div class="input-box">
-            <input type="text" name="email" autocomplete="off" spellcheck="false" placeholder="Email:" required />
+            <input type="email" name="email" autocomplete="off" spellcheck="false" placeholder="Email" required />
           </div>
+
           <div class="input-box">
-            <input type="tel" name="contact" autocomplete="off" spellcheck="false" placeholder="Contact:" required />
+            <input type="tel" name="contact" autocomplete="off" spellcheck="false" placeholder="Contact" required />
           </div>
+
           <div class="input-box">
-            <textarea name="message" cols="30" rows="10" autocomplete="off" placeholder="Message:" required></textarea>
+            <textarea name="message" cols="30" rows="10" autocomplete="off" placeholder="Message" required></textarea>
           </div>
+
           <div class="btn">
             <button type="submit" id="submitButton" class="btn-submit">
               Send Message
             </button>
           </div>
+
+          <!-- Success / Error message -->
+          <p id="formStatus" style="display:none;margin-top:10px;"></p>
         </form>
+
       </div>
     </section>
     <footer id="footer">
@@ -535,7 +548,8 @@
             <a href="https://github.com/Resvan" target="_blank"><i class="fa-brands fa-github"></i></a>
           </li>
           <li>
-            <a href="https://www.linkedin.com/in/muhammed-resvan-k/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="https://www.linkedin.com/in/muhammed-resvan-k/" target="_blank"><i
+                class="fa-brands fa-linkedin"></i></a>
           </li>
           <li>
             <a href="https://www.instagram.com/rsv_n.__k/" target="_blank"><i class="fa-brands fa-instagram"></i></a>

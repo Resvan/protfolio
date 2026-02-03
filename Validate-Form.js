@@ -1,24 +1,29 @@
 $(document).ready(function () {
-  jQuery.validator.addMethod(
+
+  // Letters only validator
+  $.validator.addMethod(
     "lettersonly",
     function (value, element) {
-      return this.optional(element) || /^[a-z ]+$/.test(value);
+      return this.optional(element) || /^[a-zA-Z ]+$/.test(value.trim());
     },
     "Letters only please"
   );
-  jQuery.validator.addMethod(
-    "minlength5",
-    function (value, element) {
-      return this.optional(element) || (value.trim().length >= 5);
+
+  // Trimmed minlength validator
+  $.validator.addMethod(
+    "minlengthTrim",
+    function (value, element, min) {
+      return this.optional(element) || value.trim().length >= min;
     },
-    "Minimum 5 characters without space"
+    "Too short"
   );
-  $(".contact-forms").validate({
+
+  $("#contactForm").validate({
     rules: {
       name: {
-        minlength5: true,
         required: true,
-        minlength: 5,
+        lettersonly: true,
+        minlengthTrim: 5,
         maxlength: 20,
       },
       email: {
@@ -27,53 +32,75 @@ $(document).ready(function () {
       },
       contact: {
         required: true,
-        number: true,
+        digits: true,
         minlength: 10,
         maxlength: 10,
       },
       message: {
-        minlength5: true,
         required: true,
-        minlength: 10,
+        minlengthTrim: 10,
         maxlength: 200,
       },
     },
+
     messages: {
       name: {
-        minlength: "Please Enter Your Full Name",
+        required: "Please enter your full name",
       },
       email: {
-        email: "Please enter a valid Email id",
+        required: "Email is required",
+        email: "Please enter a valid email",
       },
       contact: {
-        minlength: "Please enter a valid contact number",
-        maxlength: "Please enter a valid contact number",
+        required: "Contact number is required",
+        minlength: "Enter a valid 10-digit number",
+        maxlength: "Enter a valid 10-digit number",
       },
       message: {
-        minlength: "Its too short! minimum 10 characters",
-        maxlength: "Oh no! it's too large",
+        minlengthTrim: "Message must be at least 10 characters",
+        maxlength: "Message is too long",
       },
     },
+
     submitHandler: function (form) {
-      console.log("True");
-      console.log("in function submit");
-      submit();
+      sendContactForm(form);
     },
   });
 });
-function submit() {
+
+// ---- AJAX SUBMIT ----
+function sendContactForm(form) {
+  const $form = $(form);
+  const $button = $("#submitButton");
+  const $status = $("#formStatus");
+
+  // Honeypot check
+  if ($form.find('input[name="website"]').val()) {
+    return;
+  }
+
+  $button.prop("disabled", true).text("Sending...");
+  $status.hide();
+
   $.ajax({
-    url: "https://script.google.com/macros/s/AKfycbybAcL6-rBw1kTslaCFrMA9xvr20ntQSUjv6aWC1Z56OdliLyh2frW3GQnUrIM27aSDRQ/exec",  // Replace with your web app URL
-    data: $(".contact-forms").serialize(),
+    url: "https://script.google.com/macros/s/AKfycbybAcL6-rBw1kTslaCFrMA9xvr20ntQSUjv6aWC1Z56OdliLyh2frW3GQnUrIM27aSDRQ/exec",
     method: "POST",
-    success: function (response) {
-      alert("Form submitted successfully");
-      window.location.reload();
+    data: $form.serialize(),
+    success: function () {
+      $form.trigger("reset");
+      $status
+        .text("✅ Message sent successfully!")
+        .css("color", "green")
+        .show();
     },
-    error: function (err) {
-      console.log(err);
-      alert("Something Error");
+    error: function () {
+      $status
+        .text("❌ Something went wrong. Please try again.")
+        .css("color", "red")
+        .show();
+    },
+    complete: function () {
+      $button.prop("disabled", false).text("Send Message");
     },
   });
-
 }
