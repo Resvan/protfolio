@@ -1,0 +1,62 @@
+---
+import ProjectShot from '../../components/ProjectShot.astro';
+import { Icon } from 'astro-icon/components';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import BrowserFrame from '../../components/BrowserFrame.astro';
+import { featuredProjects, type Project } from '../../data/projects';
+import { getProjectImage } from '../../lib/project-images';
+import { site } from '../../data/site';
+
+export function getStaticPaths() {
+  return featuredProjects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+const { project } = Astro.props as { project: Project };
+const image = getProjectImage(project.slug);
+const path = `/projects/${project.slug}/`;
+const index = featuredProjects.findIndex((p) => p.slug === project.slug);
+const graph = [
+  { '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+    { '@type': 'ListItem', position: 2, name: 'Work', item: `${site.url}/#work` },
+    { '@type': 'ListItem', position: 3, name: project.name, item: `${site.url}${path}` },
+  ] },
+];
+---
+<BaseLayout title={`${project.name} case study | ${site.alternateName}`} description={project.description.slice(0, 155)} ogImage={`/og${path.replace(/\/$/, '')}.png`} {path}>
+  <JsonLd slot="head" graph={graph} />
+  <Header />
+  <main id="main" class="container flex-1 py-14 md:py-20">
+    <a href="/#work" class="label inline-flex items-center gap-2 hover:text-fg"><Icon name="lucide:arrow-left" class="size-3.5" aria-hidden="true" /> All work</a>
+    <p class="label mt-10"><span class="text-accent">0{index + 1}</span> — Case study</p>
+    <h1 class="mt-4 max-w-4xl text-step-5">{project.name}</h1>
+    <p class="mt-6 max-w-2xl text-step-1 text-muted">{project.description}</p>
+    <div class="mt-12 rounded-[2rem] hairline bg-surface p-3 md:p-4">
+      <BrowserFrame url={project.url}>
+        <ProjectShot image={image} name={project.name} aspect="aspect-[16/9]" widths={[640, 960, 1280, 1600]} sizes="(min-width: 1216px) 1152px, 94vw" loading="eager" priority />
+      </BrowserFrame>
+    </div>
+    <div class="mt-16 grid gap-12 md:grid-cols-[1.6fr_1fr] md:gap-20">
+      <div class="space-y-14">
+        <section aria-labelledby="problem">
+          <p class="label">The problem</p>
+          <h2 id="problem" class="mt-3 text-step-3">What needed <em>solving.</em></h2>
+          <p class="mt-5 max-w-prose text-muted">{project.caseStudy?.problem}</p>
+        </section>
+        <section aria-labelledby="built">
+          <p class="label">The work</p>
+          <h2 id="built" class="mt-3 text-step-3">What I <em>built.</em></h2>
+          <p class="mt-5 max-w-prose text-muted">{project.caseStudy?.built}</p>
+        </section>
+      </div>
+      <aside class="h-fit rounded-3xl hairline bg-surface p-7 md:sticky md:top-28">
+        <p class="label">Stack</p>
+        <ul class="mt-4 space-y-2 font-display text-step-1">{project.stack.map((s) => <li>{s}</li>)}</ul>
+        <a href={project.url} target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full bg-fg px-5 py-3 font-medium text-bg transition-transform hover:-translate-y-0.5 motion-reduce:transition-none">Visit live site <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
+      </aside>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

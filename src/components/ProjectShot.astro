@@ -1,0 +1,14 @@
+---
+/** A project screenshot, or a themed "coming soon" placeholder when none exists yet. */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+interface Props { image: ImageMetadata | null; name: string; aspect: string; widths: number[]; sizes: string; loading?: 'lazy' | 'eager'; priority?: boolean; class?: string }
+const { image, name, aspect, widths, sizes, loading = 'lazy', priority = false, class: cls = '' } = Astro.props;
+---
+{image ? (
+  <Image src={image} alt={`Screenshot of ${name}`} {widths} {sizes} class={`${aspect} w-full object-cover object-top ${cls}`} {loading} fetchpriority={priority ? 'high' : undefined} />
+) : (
+  <div class={`${aspect} flex w-full items-center justify-center bg-surface-2`} role="img" aria-label={`Screenshot of ${name} coming soon`}>
+    <p class="label">Screenshot coming soon</p>
+  </div>
+)}

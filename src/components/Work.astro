@@ -1,0 +1,22 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionHeading from './SectionHeading.astro';
+import FeaturedProject from './FeaturedProject.astro';
+import ProjectCard from './ProjectCard.astro';
+import { featuredProjects, otherProjects } from '../data/projects';
+import { site } from '../data/site';
+---
+<section id="work" class="js-section reveal container py-24 md:py-32" aria-labelledby="work-title">
+  <SectionHeading id="work" number="04" eyebrow="Selected work" title="Things I've <em>built.</em>">
+    <a href={site.socials.github} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-muted hover:text-fg">
+      More on GitHub <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" />
+    </a>
+  </SectionHeading>
+  <div class="space-y-8">
+    {featuredProjects.map((p, i) => <FeaturedProject project={p} index={i} />)}
+  </div>
+  <p class="label mt-24">More projects</p>
+  <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {otherProjects.map((p) => <ProjectCard project={p} />)}
+  </ul>
+</section>

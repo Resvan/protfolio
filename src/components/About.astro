@@ -1,0 +1,43 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { site } from '../data/site';
+import { skillGroups } from '../data/skills';
+import { experience } from '../data/experience';
+import { projects } from '../data/projects';
+import { computeFacts } from '../lib/facts';
+const facts = computeFacts(experience, projects.length);
+const tiles = [
+  { value: `${facts.years}+`, label: 'years building for production' },
+  { value: String(facts.projects), label: 'products shipped' },
+  { value: String(facts.companies), label: 'companies, India and Europe' },
+];
+---
+<section id="about" class="js-section reveal container py-24 md:py-32" aria-labelledby="about-title">
+  <SectionHeading id="about" number="01" eyebrow="About" title="A builder who cares about <em>the details.</em>" />
+  <div class="grid gap-4 md:grid-cols-6">
+    <div class="rounded-3xl hairline bg-surface p-8 md:col-span-4 md:row-span-3 md:p-10">
+      <p class="font-display text-step-2 leading-snug">
+        I'm {site.alternateName}, a software engineer from Kerala who turns rough ideas into products people actually use.
+      </p>
+      <p class="mt-6 max-w-prose text-muted">
+        I've shipped marketing sites, SaaS dashboards, booking systems and mobile apps, mostly on the React and Node.js stack.
+        Right now I build the front end at <a href={site.employer.url} target="_blank" rel="noopener noreferrer" class="text-fg">{site.employer.name}</a>,
+        a Dutch sales software company, and take on a small number of freelance projects on the side.
+      </p>
+    </div>
+    {tiles.map((t) => (
+      <div class="flex flex-col justify-between rounded-3xl hairline bg-surface p-6 md:col-span-2">
+        <p class="font-display text-step-4 leading-none">{t.value}</p>
+        <p class="label mt-6 normal-case tracking-normal">{t.label}</p>
+      </div>
+    ))}
+    <dl class="rounded-3xl hairline bg-surface p-8 md:col-span-6 md:p-10">
+      {skillGroups.map((g, i) => (
+        <div class={`grid gap-2 py-4 sm:grid-cols-[9rem_1fr] sm:items-baseline ${i ? 'hairline-t' : ''}`}>
+          <dt class="label">{g.name}</dt>
+          <dd class="font-display text-step-2 text-fg">{g.items.join('  ·  ')}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>

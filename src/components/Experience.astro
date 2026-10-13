@@ -1,0 +1,35 @@
+---
+import { experience, formatRange } from '../data/experience';
+---
+<section id="experience" class="js-section reveal container py-24 md:py-32" aria-labelledby="experience-title">
+  <div class="grid gap-12 md:grid-cols-[1fr_1.6fr] md:gap-20">
+    <div class="md:sticky md:top-28 md:self-start">
+      <p class="label"><span class="text-accent">02</span> — Experience</p>
+      <h2 id="experience-title" class="mt-4 text-step-4">Where I've <em>worked.</em></h2>
+      <p class="mt-6 max-w-sm text-muted">Product teams in India, Germany and the Netherlands, from a bootcamp capstone to a Dutch SaaS front end.</p>
+      <p class="label mt-10 normal-case tracking-normal">Landed on Earth, March 2000.</p>
+    </div>
+    <ol>
+      {experience.map((job, i) => (
+        <li class={`grid gap-4 py-9 sm:grid-cols-[5.5rem_1fr] ${i ? 'hairline-t' : 'sm:pt-0'}`}>
+          <p class="font-display text-step-2 leading-none text-muted/70"><time datetime={job.start}>{job.start.slice(0, 4)}</time></p>
+          <div>
+            <h3 class="text-step-2">{job.title}</h3>
+            <p class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-muted">
+              {job.url ? (
+                <a href={job.url} target="_blank" rel="noopener noreferrer" class="text-fg">{job.company}</a>
+              ) : (
+                <span class="text-fg">{job.company}</span>
+              )}
+              <span class="label normal-case tracking-normal">{formatRange(job)}</span>
+              {job.note && <span class="label normal-case tracking-normal">· {job.note}</span>}
+            </p>
+            <ul class="mt-4 space-y-1.5 text-muted">
+              {job.highlights.map((h) => <li class="flex gap-3"><span class="mt-[0.7em] size-1 shrink-0 rounded-full bg-accent" aria-hidden="true"></span><span>{h}</span></li>)}
+            </ul>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

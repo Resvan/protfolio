@@ -1,0 +1,21 @@
+---
+import { Icon } from 'astro-icon/components';
+import { site } from '../data/site';
+---
+<a
+  id="whatsapp-fab"
+  href={`https://wa.me/${site.whatsapp}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Chat on WhatsApp"
+  class="fixed bottom-5 right-5 z-40 inline-flex size-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_8px_30px_rgba(37,211,102,0.35)] transition-transform hover:-translate-y-0.5 motion-reduce:transition-none"
+>
+  <Icon name="simple-icons:whatsapp" class="size-6" aria-hidden="true" />
+</a>
+<script>
+  const fab = document.getElementById('whatsapp-fab');
+  const contact = document.getElementById('contact');
+  if (fab && contact && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([en]) => { fab.hidden = en.isIntersecting; }, { threshold: 0.2 }).observe(contact);
+  }
+</script>

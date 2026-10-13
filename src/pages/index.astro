@@ -1,0 +1,50 @@
+---
+import { getImage } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Experience from '../components/Experience.astro';
+import Services from '../components/Services.astro';
+import Work from '../components/Work.astro';
+import Contact from '../components/Contact.astro';
+import WhatsAppFab from '../components/WhatsAppFab.astro';
+import Footer from '../components/Footer.astro';
+import JsonLd from '../components/JsonLd.astro';
+import { site } from '../data/site';
+import { projects } from '../data/projects';
+import photo from '../assets/resvan.jpg';
+
+const img = await getImage({ src: photo, width: 800, format: 'jpg' });
+const imageUrl = new URL(img.src, site.url).href;
+const graph = [
+  {
+    '@type': 'Person', '@id': `${site.url}/#person`,
+    name: site.name, alternateName: site.alternateName, jobTitle: site.jobTitle, url: site.url, image: imageUrl, email: `mailto:${site.email}`,
+    worksFor: { '@type': 'Organization', name: site.employer.name, url: site.employer.url },
+    address: { '@type': 'PostalAddress', addressLocality: site.address.locality, addressRegion: site.address.region, addressCountry: site.address.country },
+    sameAs: Object.values(site.socials),
+  },
+  { '@type': 'WebSite', '@id': `${site.url}/#website`, url: site.url, name: site.name, publisher: { '@id': `${site.url}/#person` } },
+  { '@type': 'ProfilePage', '@id': `${site.url}/#profile`, url: site.url, name: site.title, description: site.description, mainEntity: { '@id': `${site.url}/#person` }, isPartOf: { '@id': `${site.url}/#website` } },
+  {
+    '@type': 'ItemList', name: 'Projects',
+    itemListElement: projects.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.name, url: p.url })),
+  },
+];
+---
+<BaseLayout path="/">
+  <JsonLd slot="head" graph={graph} />
+  <Header />
+  <main id="main" class="flex-1">
+    <Hero />
+    <About />
+    <Experience />
+    <Services />
+    <Work />
+    <Contact />
+  </main>
+  <Footer />
+  <WhatsAppFab />
+  <script src="../scripts/reveal.ts"></script>
+</BaseLayout>

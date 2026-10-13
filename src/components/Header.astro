@@ -1,0 +1,53 @@
+---
+import { Icon } from 'astro-icon/components';
+import ThemeToggle from './ThemeToggle.astro';
+import { navItems } from '../lib/nav';
+import { site } from '../data/site';
+// In-page anchors only resolve on the home page; elsewhere link back to /#section.
+const prefix = Astro.url.pathname === '/' ? '' : '/';
+---
+<header
+  id="site-header"
+  class="sticky top-0 z-50 hairline-b bg-bg/70 backdrop-blur-xl transition-transform duration-300 motion-reduce:transition-none"
+>
+  <div class="container flex h-16 items-center justify-between gap-4">
+    <a href="/" class="flex items-center gap-3">
+      <span class="font-display text-2xl leading-none text-fg" aria-hidden="true">R<span class="text-accent">.</span></span>
+      <span class="label hidden sm:inline">{site.alternateName}</span><span class="sr-only">{site.alternateName} home</span>
+    </a>
+
+    <nav aria-label="Primary" class="hidden md:block">
+      <ul class="flex items-center gap-8">
+        {navItems.map((n) => (
+          <li><a href={prefix + n.href} class="js-nav-link label transition-colors hover:text-fg aria-[current=true]:text-fg" data-target={n.href.slice(1)}>{n.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <ThemeToggle />
+      <button
+        type="button"
+        id="menu-button"
+        class="inline-flex size-10 items-center justify-center rounded-full hairline bg-surface md:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open menu"
+      >
+        <Icon name="lucide:menu" class="size-5 [[aria-expanded=true]_&]:hidden" aria-hidden="true" />
+        <Icon name="lucide:x" class="size-5 hidden [[aria-expanded=true]_&]:block" aria-hidden="true" />
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hairline-t bg-bg md:hidden" hidden>
+    <nav aria-label="Mobile">
+      <ul class="container flex flex-col py-3">
+        {navItems.map((n) => (
+          <li><a href={prefix + n.href} class="js-nav-link block py-3 font-display text-step-2 text-muted hover:text-fg aria-[current=true]:text-fg" data-target={n.href.slice(1)}>{n.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+<script src="../scripts/header.ts"></script>

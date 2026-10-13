@@ -1,0 +1,11 @@
+---
+interface Props { id: string; number: string; eyebrow: string; title: string }
+const { id, number, eyebrow, title } = Astro.props;
+---
+<div class="mb-12 flex flex-col gap-5 md:mb-16 md:flex-row md:items-end md:justify-between">
+  <div>
+    <p class="label"><span class="text-accent">{number}</span> — {eyebrow}</p>
+    <h2 id={`${id}-title`} class="mt-4 max-w-3xl text-step-4" set:html={title} />
+  </div>
+  <slot />
+</div>

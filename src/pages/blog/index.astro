@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { site } from '../../data/site';
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+<BaseLayout title={`Blog | ${site.alternateName}`} description={`Notes on web and mobile engineering by ${site.name}.`} ogImage="/og/blog.png" path="/blog/" noindex={posts.length === 0}>
+  <Header />
+  <main id="main" class="container flex-1 py-14 md:py-20">
+    <p class="label">Notes</p>
+    <h1 class="mt-4 text-step-5">Blog<em>.</em></h1>
+    {posts.length === 0 ? (
+      <p class="mt-4 text-muted">No posts yet. Meanwhile, see <a href="/#work" class="text-accent underline-offset-4 hover:underline">my work</a>.</p>
+    ) : (
+      <ul class="mt-10">
+        {posts.map((p) => (
+          <li class="py-6 hairline-t"><a href={`/blog/${p.id}/`} class="font-display text-step-2 text-fg">{p.data.title}</a>
+            <p class="label mt-2 normal-case tracking-normal"><time datetime={p.data.pubDate.toISOString()}>{p.data.pubDate.toDateString()}</time></p>
+            <p class="mt-1 text-muted">{p.data.description}</p></li>
+        ))}
+      </ul>
+    )}
+  </main>
+  <Footer />
+</BaseLayout>

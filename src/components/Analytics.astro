@@ -1,0 +1,19 @@
+---
+import { site } from '../data/site';
+const id = site.analyticsId;
+---
+<script is:inline define:vars={{ id }}>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', id, { send_page_view: true });
+  function loadGtag() {
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
+    document.head.appendChild(s);
+  }
+  window.addEventListener('load', function () {
+    (window.requestIdleCallback || function (cb) { setTimeout(cb, 1500); })(loadGtag);
+  });
+</script>

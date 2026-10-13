@@ -1,0 +1,13 @@
+---
+/** Decorative browser chrome around a screenshot. */
+interface Props { url: string; class?: string }
+const { url, class: cls = '' } = Astro.props;
+const host = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+---
+<div class={`overflow-hidden rounded-2xl hairline bg-surface-2 ${cls}`}>
+  <div class="flex items-center gap-3 px-4 py-2.5 hairline-b" aria-hidden="true">
+    <span class="flex gap-1.5"><i class="size-2.5 rounded-full bg-fg/15"></i><i class="size-2.5 rounded-full bg-fg/15"></i><i class="size-2.5 rounded-full bg-fg/15"></i></span>
+    <span class="label mx-auto truncate rounded-md bg-bg/60 px-3 py-1 normal-case tracking-normal">{host}</span>
+  </div>
+  <div class="overflow-hidden bg-surface"><slot /></div>
+</div>

@@ -1,0 +1,13 @@
+---
+import { skillGroups } from '../data/skills';
+---
+<dl class="grid gap-4 sm:grid-cols-2">
+  {skillGroups.map((g) => (
+    <div>
+      <dt class="text-step--1 font-medium uppercase tracking-wider text-muted">{g.name}</dt>
+      <dd class="mt-2 flex flex-wrap gap-2">
+        {g.items.map((s) => <span class="rounded-full border border-line bg-surface px-3 py-1 text-step--1">{s}</span>)}
+      </dd>
+    </div>
+  ))}
+</dl>
