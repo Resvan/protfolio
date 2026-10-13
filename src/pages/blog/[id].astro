@@ -1,0 +1,24 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { site } from '../../data/site';
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+<BaseLayout title={`${post.data.title} | ${site.alternateName}`} description={post.data.description} ogImage="/og/blog.png" path={`/blog/${post.id}/`}>
+  <Header />
+  <main id="main" class="container flex-1 py-14 md:py-20">
+    <article class="max-w-prose">
+      <h1 class="text-step-4">{post.data.title}</h1>
+      <p class="label mt-4 normal-case tracking-normal"><time datetime={post.data.pubDate.toISOString()}>{post.data.pubDate.toDateString()}</time></p>
+      <div class="mt-8 space-y-4 text-muted [&_a]:text-accent [&_h2]:mt-8 [&_h2]:text-step-2 [&_h2]:font-semibold [&_h2]:text-fg [&_pre]:overflow-x-auto [&_pre]:rounded-md [&_pre]:bg-surface [&_pre]:p-4"><Content /></div>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>

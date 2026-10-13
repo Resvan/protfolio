@@ -1,0 +1,28 @@
+---
+import { Icon } from 'astro-icon/components';
+import { site } from '../data/site';
+const year = new Date().getFullYear();
+const links = [
+  { href: site.socials.github, label: 'GitHub', icon: 'simple-icons:github' },
+  { href: site.socials.linkedin, label: 'LinkedIn', icon: 'simple-icons:linkedin' },
+  { href: site.socials.instagram, label: 'Instagram', icon: 'simple-icons:instagram' },
+  { href: `https://wa.me/${site.whatsapp}`, label: 'WhatsApp', icon: 'simple-icons:whatsapp' },
+];
+---
+<footer class="hairline-t">
+  <div class="container flex flex-col gap-8 py-12 md:flex-row md:items-end md:justify-between">
+    <div>
+      <p class="font-display text-step-3">resvan<span class="text-accent">.</span>in</p>
+      <p class="label mt-3 normal-case tracking-normal">© {year} {site.name} · Built with Astro, hosted on GitHub Pages.</p>
+    </div>
+    <ul class="flex gap-2">
+      {links.map((l) => (
+        <li>
+          <a href={l.href} target="_blank" rel="noopener noreferrer" aria-label={l.label} class="inline-flex size-10 items-center justify-center rounded-full hairline text-muted transition-colors hover:bg-surface hover:text-fg">
+            <Icon name={l.icon} class="size-4" aria-hidden="true" />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</footer>

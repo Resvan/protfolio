@@ -1,0 +1,134 @@
+@import 'tailwindcss';
+
+:root {
+  --bg: #0a0a0b;
+  --surface: #111214;
+  --surface-2: #18191c;
+  --text: #ededf0;
+  --muted: #9a9ba3;
+  --accent: #7aaaff;
+  --accent-fg: #0a0a0b;
+  --border: rgba(255, 255, 255, 0.09);
+  --glow: rgba(122, 170, 255, 0.22);
+  --step--1: clamp(0.8rem, 0.78rem + 0.1vw, 0.875rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --step-1: clamp(1.15rem, 1.05rem + 0.5vw, 1.35rem);
+  --step-2: clamp(1.5rem, 1.25rem + 1.2vw, 2.1rem);
+  --step-3: clamp(2rem, 1.5rem + 2.2vw, 3.1rem);
+  --step-4: clamp(2.5rem, 1.7rem + 3.6vw, 4.4rem);
+  --step-5: clamp(3rem, 1.8rem + 6vw, 6.5rem);
+  color-scheme: dark;
+}
+:root[data-theme='light'] {
+  --bg: #f6f4ef;
+  --surface: #fffdf9;
+  --surface-2: #eeebe3;
+  --text: #151518;
+  --muted: #5a5a64;
+  --accent: #1f5fd0;
+  --accent-fg: #ffffff;
+  --border: rgba(20, 20, 24, 0.11);
+  --glow: rgba(31, 95, 208, 0.16);
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-line: var(--border);
+  --font-display: var(--font-instrument-serif);
+  --font-body: var(--font-inter);
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  --text-step--1: var(--step--1);
+  --text-step-0: var(--step-0);
+  --text-step-1: var(--step-1);
+  --text-step-2: var(--step-2);
+  --text-step-3: var(--step-3);
+  --text-step-4: var(--step-4);
+  --text-step-5: var(--step-5);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  h1 em, h2 em, h3 em { font-style: italic; color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  ::selection { background: var(--accent); color: var(--accent-fg); }
+  /* Links inside running text must be distinguishable without colour (WCAG 1.4.1). */
+  main p a, main li a:not([class*='inline-flex']) {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  main p a:hover, main li a:hover { text-decoration-color: var(--accent); }
+  [hidden] { display: none !important; }
+}
+
+@utility container {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  @media (min-width: 640px) { padding-inline: 2rem; }
+}
+
+/* Mono label: small caps-like eyebrow used for section numbers, dates, tags. */
+@utility label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Hairline separators and cards. */
+@utility hairline { border: 1px solid var(--border); }
+@utility hairline-t { border-top: 1px solid var(--border); }
+@utility hairline-b { border-bottom: 1px solid var(--border); }
+
+/* Film grain over the whole page; purely decorative. A tiny tiled PNG is far cheaper
+   to paint than an SVG feTurbulence filter over the viewport. */
+.grain::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.07;
+  background: url('/noise.png') repeat;
+  background-size: 96px 96px;
+}
+:root[data-theme='light'] .grain::before { opacity: 0.12; mix-blend-mode: multiply; }
+
+/* Soft radial glow used behind the hero photo and the contact panel. */
+.glow { background: radial-gradient(60% 60% at 50% 40%, var(--glow) 0%, transparent 70%); }
+
+/* Reveal: visible by default. reveal.ts adds .reveal-ready to <html> only when
+   IntersectionObserver exists and prefers-reduced-motion is not "reduce". */
+.reveal-ready .reveal {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.reveal-ready .reveal.in-view { opacity: 1; transform: none; }

@@ -1,0 +1,47 @@
+---
+import { Icon } from 'astro-icon/components';
+import { site } from '../data/site';
+import { MESSAGE_MAX } from '../lib/validation';
+const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? '';
+const field = 'w-full border-0 border-b border-line bg-transparent px-0 py-3 text-step-1 text-fg placeholder:text-muted/50 focus:border-accent focus:outline-none focus-visible:outline-none aria-[invalid=true]:border-red-500';
+const label = 'label block';
+const err = 'mt-1.5 text-step--1 text-red-500';
+---
+<form id="contact-form" class="space-y-7" method="post" action={endpoint || undefined} novalidate data-endpoint={endpoint} data-whatsapp={site.whatsapp} data-email={site.email}>
+  <p class="hidden" aria-hidden="true">
+    <label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+  </p>
+  <div>
+    <label for="cf-name" class={label}>Name</label>
+    <input id="cf-name" name="name" type="text" class={field} required minlength="2" maxlength="60" autocomplete="name" aria-describedby="cf-name-error" />
+    <p id="cf-name-error" class={err} aria-live="polite"></p>
+  </div>
+  <div>
+    <label for="cf-email" class={label}>Email</label>
+    <input id="cf-email" name="email" type="email" class={field} required autocomplete="email" inputmode="email" aria-describedby="cf-email-error" />
+    <p id="cf-email-error" class={err} aria-live="polite"></p>
+  </div>
+  <div>
+    <label for="cf-phone" class={label}>Phone <span class="normal-case tracking-normal">(optional, any country)</span></label>
+    <input id="cf-phone" name="phone" type="tel" class={field} autocomplete="tel" inputmode="tel" placeholder="+31 6 1234 5678" aria-describedby="cf-phone-error" />
+    <p id="cf-phone-error" class={err} aria-live="polite"></p>
+  </div>
+  <div>
+    <label for="cf-message" class={label}>Message</label>
+    <textarea id="cf-message" name="message" rows="6" class={field} required minlength="10" maxlength={MESSAGE_MAX} aria-describedby="cf-message-error cf-message-count"></textarea>
+    <div class="flex justify-between gap-4">
+      <p id="cf-message-error" class={err} aria-live="polite"></p>
+      <p id="cf-message-count" class="label mt-1.5 normal-case tracking-normal" aria-live="polite">0 / {MESSAGE_MAX}</p>
+    </div>
+  </div>
+  <div class="flex flex-wrap gap-3">
+    <button type="submit" id="cf-submit" class="inline-flex items-center gap-2 rounded-full bg-fg px-6 py-3.5 font-medium text-bg transition-transform hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-60 motion-reduce:transition-none">
+      <span data-idle>Send message</span><span data-busy hidden>Sending…</span>
+    </button>
+    <button type="button" id="cf-whatsapp" class="inline-flex items-center gap-2 rounded-full hairline px-6 py-3.5 font-medium text-fg transition-colors hover:bg-bg">
+      <Icon name="simple-icons:whatsapp" class="size-4" aria-hidden="true" /> Message on WhatsApp
+    </button>
+  </div>
+  <p id="cf-status" role="status" aria-live="polite" class="rounded-2xl hairline bg-bg px-5 py-4 text-step--1" hidden></p>
+</form>
+<script src="../scripts/contact-form.ts"></script>

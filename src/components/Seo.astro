@@ -1,0 +1,34 @@
+---
+import { site } from '../data/site';
+interface Props { title: string; description: string; path: string; ogImage: string; noindex?: boolean }
+const { title, description, path, ogImage, noindex = false } = Astro.props;
+const canonical = new URL(path, site.url).href;
+const ogUrl = new URL(ogImage, site.url).href;
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+<meta name="author" content={site.name} />
+<meta name="google-site-verification" content="_fLcHiG0g5VxqX7UWz6gD9HKPqJ5C1ekgJRkys6fb9I" />
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content={site.themeColor.dark} />
+<meta name="theme-color" media="(prefers-color-scheme: light)" content={site.themeColor.light} />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={title} />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogUrl} />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<link rel="sitemap" href="/sitemap-index.xml" />

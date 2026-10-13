@@ -1,0 +1,48 @@
+---
+import '../styles/global.css';
+import { Font } from 'astro:assets';
+import Seo from '../components/Seo.astro';
+import Analytics from '../components/Analytics.astro';
+import SkipLink from '../components/SkipLink.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  noindex?: boolean;
+  path?: string;
+}
+const {
+  title = site.title,
+  description = site.description,
+  ogImage = '/og/home.png',
+  noindex = false,
+  path = Astro.url.pathname,
+} = Astro.props;
+---
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      (function () {
+        try {
+          var s = localStorage.getItem('theme');
+          var t = s === 'light' || s === 'dark' ? s : (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+          document.documentElement.dataset.theme = t;
+        } catch (e) {}
+      })();
+    </script>
+    <Seo {title} {description} {path} {ogImage} {noindex} />
+    <Font cssVariable="--font-instrument-serif" preload />
+    <Font cssVariable="--font-inter" />
+    <slot name="head" />
+    {import.meta.env.PROD && <Analytics />}
+  </head>
+  <body class="bg-bg text-fg font-body min-h-dvh flex flex-col grain">
+    <SkipLink />
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,31 @@
+---
+import ProjectShot from './ProjectShot.astro';
+import { Icon } from 'astro-icon/components';
+import BrowserFrame from './BrowserFrame.astro';
+import type { Project } from '../data/projects';
+import { getProjectImage } from '../lib/project-images';
+interface Props { project: Project; index: number }
+const { project, index } = Astro.props;
+const image = getProjectImage(project.slug);
+---
+<article class="group rounded-[2rem] hairline bg-surface p-3 md:p-4">
+  <a href={`/projects/${project.slug}/`} class="block rounded-2xl focus-visible:outline-offset-4" aria-label={`${project.name} case study`}>
+    <BrowserFrame url={project.url}>
+      <ProjectShot image={image} name={project.name} aspect="aspect-[16/9]" widths={[640, 960, 1280, 1600]} sizes="(min-width: 1216px) 1152px, 94vw" class="transition-transform duration-700 group-hover:scale-[1.02] motion-reduce:transition-none" />
+    </BrowserFrame>
+  </a>
+  <div class="grid gap-6 px-3 pb-5 pt-8 md:grid-cols-[1.3fr_1fr] md:gap-12 md:px-6 md:pb-6">
+    <div>
+      <p class="label"><span class="text-accent">0{index + 1}</span> — Featured</p>
+      <h3 class="mt-3 text-step-3">{project.name}</h3>
+      <p class="mt-4 max-w-prose text-muted">{project.description}</p>
+    </div>
+    <div class="flex flex-col justify-between gap-6">
+      <p class="label leading-relaxed normal-case tracking-normal">{project.stack.join('  /  ')}</p>
+      <div class="flex flex-wrap gap-x-6 gap-y-2">
+        <a href={`/projects/${project.slug}/`} class="inline-flex items-center gap-2 text-fg">Case study <Icon name="lucide:arrow-right" class="size-4" aria-hidden="true" /></a>
+        <a href={project.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-muted hover:text-fg">Live site <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
+      </div>
+    </div>
+  </div>
+</article>

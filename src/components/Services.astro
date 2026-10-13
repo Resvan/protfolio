@@ -1,0 +1,28 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionHeading from './SectionHeading.astro';
+import { services } from '../data/services';
+---
+<section id="services" class="js-section reveal container py-24 md:py-32" aria-labelledby="services-title">
+  <SectionHeading id="services" number="03" eyebrow="Services" title="What I can <em>do for you.</em>" />
+  <ol>
+    {services.map((s, i) => (
+      <li class="grid gap-6 py-10 hairline-t md:grid-cols-[5rem_1.2fr_1fr] md:gap-10 md:py-12">
+        <p class="font-display text-step-3 leading-none text-muted/60">0{i + 1}</p>
+        <div>
+          <h3 class="text-step-3">{s.title}</h3>
+          <p class="mt-4 max-w-md text-muted">{s.summary}</p>
+        </div>
+        <div class="flex flex-col">
+          <p class="label">What you get</p>
+          <ul class="mt-3 space-y-2 text-fg">
+            {s.youGet.map((y) => <li class="flex gap-3"><Icon name="lucide:check" class="mt-1.5 size-3.5 shrink-0 text-accent" aria-hidden="true" /><span>{y}</span></li>)}
+          </ul>
+          <a href="#contact" class="group mt-6 inline-flex items-center gap-2 self-start text-fg">
+            Start a conversation <Icon name="lucide:arrow-right" class="size-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" aria-hidden="true" />
+          </a>
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>

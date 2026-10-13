@@ -1,0 +1,23 @@
+---
+import ProjectShot from './ProjectShot.astro';
+import { Icon } from 'astro-icon/components';
+import BrowserFrame from './BrowserFrame.astro';
+import type { Project } from '../data/projects';
+import { getProjectImage } from '../lib/project-images';
+interface Props { project: Project }
+const { project } = Astro.props;
+const image = getProjectImage(project.slug);
+---
+<li class="group flex flex-col rounded-3xl hairline bg-surface p-3">
+  <BrowserFrame url={project.url}>
+    <ProjectShot image={image} name={project.name} aspect="aspect-[16/10]" widths={[400, 800]} sizes="(min-width: 1024px) 24rem, (min-width: 640px) 50vw, 94vw" class="transition-transform duration-700 group-hover:scale-[1.03] motion-reduce:transition-none" />
+  </BrowserFrame>
+  <div class="flex flex-1 flex-col px-3 pb-3 pt-6">
+    <h3 class="text-step-2">{project.name}</h3>
+    <p class="mt-2 text-step--1 text-muted">{project.description}</p>
+    <p class="label mt-4 normal-case tracking-normal">{project.stack.join('  /  ')}</p>
+    <a href={project.url} target="_blank" rel="noopener noreferrer" class="mt-auto inline-flex items-center gap-2 pt-6 text-fg">
+      Visit {project.name} <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" />
+    </a>
+  </div>
+</li>
