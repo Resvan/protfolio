@@ -14,10 +14,10 @@ describe('site identity', () => {
 });
 
 describe('projects', () => {
-  it('has 8 projects, 3 featured, unique slugs, https links', () => {
-    expect(projects).toHaveLength(8);
+  it('has 9 projects, 3 featured, unique slugs, https links', () => {
+    expect(projects).toHaveLength(9);
     expect(projects.filter((p) => p.featured)).toHaveLength(3);
-    expect(new Set(projects.map((p) => p.slug)).size).toBe(8);
+    expect(new Set(projects.map((p) => p.slug)).size).toBe(9);
     for (const p of projects) expect(p.url).toMatch(/^https:\/\//);
   });
   it('fixes the Xylothia link', () => {
@@ -30,8 +30,12 @@ describe('experience', () => {
     expect(experience[0].company).toBe('Salesdock');
     expect(experience[0].end).toBeNull();
     expect(experience.map((j) => j.company)).toEqual([
-      'Salesdock', 'CleverPush', 'Hawr Technologies', 'Adam Technologies', 'Duple IT Solutions', 'Brocamp (Brototype)',
+      'Salesdock', 'Freelance', 'CleverPush', 'Hawr Technologies', 'Adam Technologies', 'Duple IT Solutions', 'Brocamp (Brototype)',
     ]);
+  });
+  it('lists jobs by start date, newest first', () => {
+    const starts = experience.map((j) => j.start);
+    expect(starts).toEqual([...starts].sort().reverse());
   });
   it('has 2-3 highlights per job', () => {
     for (const j of experience) expect(j.highlights.length).toBeGreaterThanOrEqual(2);

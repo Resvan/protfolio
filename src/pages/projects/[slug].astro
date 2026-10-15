@@ -54,7 +54,9 @@ const graph = [
       <aside class="h-fit rounded-3xl hairline bg-surface p-7 md:sticky md:top-28">
         <p class="label">Stack</p>
         <ul class="mt-4 space-y-2 font-display text-step-1">{project.stack.map((s) => <li>{s}</li>)}</ul>
-        <a href={project.url} target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full bg-fg px-5 py-3 font-medium text-bg transition-transform hover:-translate-y-0.5 motion-reduce:transition-none">Visit live site <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
+        {project.live !== false
+          ? <a href={project.url} target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full bg-fg px-5 py-3 font-medium text-bg transition-transform hover:-translate-y-0.5 motion-reduce:transition-none">Visit live site <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
+          : <p class="mt-8 text-muted">This site is no longer live.</p>}
       </aside>
     </div>
   </main>

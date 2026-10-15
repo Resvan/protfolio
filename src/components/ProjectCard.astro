@@ -16,8 +16,10 @@ const image = getProjectImage(project.slug);
     <h3 class="text-step-2">{project.name}</h3>
     <p class="mt-2 text-step--1 text-muted">{project.description}</p>
     <p class="label mt-4 normal-case tracking-normal">{project.stack.join('  /  ')}</p>
-    <a href={project.url} target="_blank" rel="noopener noreferrer" class="mt-auto inline-flex items-center gap-2 pt-6 text-fg">
-      Visit {project.name} <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" />
-    </a>
+    {project.live !== false
+      ? <a href={project.url} target="_blank" rel="noopener noreferrer" class="mt-auto inline-flex items-center gap-2 pt-6 text-fg">
+          Visit {project.name} <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" />
+        </a>
+      : <span class="mt-auto pt-6 text-muted">No longer live</span>}
   </div>
 </li>

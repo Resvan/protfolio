@@ -29,7 +29,7 @@ const graph = [
   { '@type': 'ProfilePage', '@id': `${site.url}/#profile`, url: site.url, name: site.title, description: site.description, mainEntity: { '@id': `${site.url}/#person` }, isPartOf: { '@id': `${site.url}/#website` } },
   {
     '@type': 'ItemList', name: 'Projects',
-    itemListElement: projects.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.name, url: p.url })),
+    itemListElement: projects.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.name, ...(p.live !== false && { url: p.url }) })),
   },
 ];
 ---

@@ -24,7 +24,9 @@ const image = getProjectImage(project.slug);
       <p class="label leading-relaxed normal-case tracking-normal">{project.stack.join('  /  ')}</p>
       <div class="flex flex-wrap gap-x-6 gap-y-2">
         <a href={`/projects/${project.slug}/`} class="inline-flex items-center gap-2 text-fg">Case study <Icon name="lucide:arrow-right" class="size-4" aria-hidden="true" /></a>
-        <a href={project.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-muted hover:text-fg">Live site <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
+        {project.live !== false
+          ? <a href={project.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-muted hover:text-fg">Live site <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
+          : <span class="inline-flex items-center gap-2 text-muted">No longer live</span>}
       </div>
     </div>
   </div>
