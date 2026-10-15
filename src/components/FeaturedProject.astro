@@ -11,7 +11,7 @@ const image = getProjectImage(project.slug);
 <article class="group rounded-[2rem] hairline bg-surface p-3 md:p-4">
   <a href={`/projects/${project.slug}/`} class="block rounded-2xl focus-visible:outline-offset-4" aria-label={`${project.name} case study`}>
     <BrowserFrame url={project.url}>
-      <ProjectShot image={image} name={project.name} aspect="aspect-[16/9]" widths={[640, 960, 1280, 1600]} sizes="(min-width: 1216px) 1152px, 94vw" class="transition-transform duration-700 group-hover:scale-[1.02] motion-reduce:transition-none" />
+      <ProjectShot image={image} name={project.name} aspect="aspect-[16/9]" widths={[640, 960, 1280, 1600, 2304]} sizes="(min-width: 1216px) 1152px, 94vw" class="transition-transform duration-700 group-hover:scale-[1.02] motion-reduce:transition-none" />
     </BrowserFrame>
   </a>
   <div class="grid gap-6 px-3 pb-5 pt-8 md:grid-cols-[1.3fr_1fr] md:gap-12 md:px-6 md:pb-6">

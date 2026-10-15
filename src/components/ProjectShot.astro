@@ -1,5 +1,5 @@
 ---
-/** A project screenshot, or a themed "coming soon" placeholder when none exists yet. */
+/** A project screenshot, or a typographic name tile when no screenshot exists. */
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 interface Props { image: ImageMetadata | null; name: string; aspect: string; widths: number[]; sizes: string; loading?: 'lazy' | 'eager'; priority?: boolean; class?: string }
@@ -8,7 +8,9 @@ const { image, name, aspect, widths, sizes, loading = 'lazy', priority = false, 
 {image ? (
   <Image src={image} alt={`Screenshot of ${name}`} {widths} {sizes} class={`${aspect} w-full object-cover object-top ${cls}`} {loading} fetchpriority={priority ? 'high' : undefined} />
 ) : (
-  <div class={`${aspect} flex w-full items-center justify-center bg-surface-2`} role="img" aria-label={`Screenshot of ${name} coming soon`}>
-    <p class="label">Screenshot coming soon</p>
+  <div class={`${aspect} relative flex w-full flex-col items-center justify-center gap-3 overflow-hidden bg-surface-2 px-6 text-center`} role="img" aria-label={`${name}, no screenshot available`}>
+    <div class="absolute inset-0 opacity-70 [background:radial-gradient(60%_80%_at_50%_0%,var(--glow),transparent_70%)]" aria-hidden="true"></div>
+    <p class="relative font-display text-step-3 leading-none text-fg">{name}</p>
+    <p class="label relative">Private project</p>
   </div>
 )}

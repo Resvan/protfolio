@@ -12,25 +12,24 @@ export interface Project {
 }
 export const projects: Project[] = [
   {
-    slug: 'cleverpush-landing',
-    name: 'CleverPush Landing Page',
-    url: 'https://landing.cleverpush.com/',
-    live: false,
+    slug: 'meetxo',
+    name: 'MeetXO',
+    url: 'https://meetxo-frontend-nextjs-res.vercel.app/',
     description:
-      'Rebuilt the CleverPush marketing site and documentation page from Figma, with Next.js, Sanity CMS, Tailwind CSS and Framer Motion animations, in German and English.',
-    stack: ['Next.js', 'Sanity.io', 'Tailwind CSS', 'Framer Motion', 'Responsive Design', 'SEO Optimization'],
+      'Freelance build of an expert consultation platform: discovery, profiles, booking with calendar availability, events, OTP sign-in and Razorpay payments.',
+    stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'NextAuth', 'Razorpay', 'Node.js', 'MongoDB'],
     featured: true,
     caseStudy: {
-      problem: 'CleverPush’s design team produced a new Figma design for the marketing site. It had to be fast and responsive, run in German and English, and keep its content in a CMS rather than in code.',
-      built: 'I rebuilt the landing page and a new documentation page in Next.js and Tailwind CSS, with Framer Motion animations and Sanity as the CMS. I also built a custom-coded page inside the existing WordPress site. CleverPush later shelved the new site, so it is no longer live.',
+      problem: 'Experts, coaches and mentors needed one place to sell their time: a personal profile page, bookable one-to-one video sessions and events, and payments handled for them.',
+      built: 'I built most of the Next.js frontend: the home page, expert discovery by category, expert profiles and the booking flow with calendar availability. I also built OTP sign-in with NextAuth, Razorpay payments, event creation and booking, profile image cropping, bookings history, transactions and KYC, and made backend fixes in Node.js where features needed them.',
     },
   },
   {
     slug: 'rentdigicare',
     name: 'Rentdigicare',
     url: 'https://rentdigicare.com/',
-    description: 'A comprehensive real estate platform developed to streamline the rental property management process.',
-    stack: ['Node JS', 'React JS', 'Express Js', 'Redux', 'Socket.io', 'Mongodb', 'Hosting - Aws Ec2'],
+    description: 'Property management platform for Alberta landlords and leasing teams: rental applications, maintenance tasks, showing appointments and tenant notices, all online.',
+    stack: ['Node.js', 'React', 'Express', 'Redux', 'Socket.io', 'MongoDB', 'AWS EC2'],
     featured: true,
     caseStudy: {
       problem: 'Rentdigicare is a property management platform from Alberta, Canada. Landlords and leasing teams were tracking applications, maintenance and showings through calls, texts, email and spreadsheets. The platform moves all of it online: rental applications with credit checks, maintenance requests routed to vendors or in-house teams, appointment booking for showings, and SMS and email notices to tenants.',
@@ -43,7 +42,7 @@ export const projects: Project[] = [
     url: 'https://www.ayurvedalayam.com/home',
     description:
       'Two connected apps for an Ayurvedic clinic: a clinic website with doctor appointment booking, and an online store for its herbal medicines with PayPal checkout.',
-    stack: ['React', 'Vite', 'MUI', 'Express', 'MongoDB', 'PayPal Integration'],
+    stack: ['React', 'Vite', 'MUI', 'Express', 'MongoDB', 'PayPal'],
     featured: true,
     caseStudy: {
       problem: 'The clinic makes its own herbal medicines and wanted one online home for both sides of the business: patients booking appointments with its doctors, and customers buying its products.',
@@ -51,28 +50,33 @@ export const projects: Project[] = [
     },
   },
   {
-    slug: 'meetxo',
-    name: 'MeetXO',
-    url: 'https://meetxo-frontend-nextjs-res.vercel.app/',
+    slug: 'cleverpush-landing',
+    name: 'CleverPush Landing Page',
+    url: 'https://landing.cleverpush.com/',
+    live: false,
     description:
-      'Freelance build of an expert consultation platform: discovery, profiles, booking with calendar availability, events, OTP sign-in and Razorpay payments.',
-    stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'NextAuth', 'Razorpay', 'Node.js', 'MongoDB'],
+      'Rebuilt the CleverPush marketing site and documentation page from Figma, with Next.js, Sanity CMS, Tailwind CSS and Framer Motion animations, in German and English.',
+    stack: ['Next.js', 'Sanity', 'Tailwind CSS', 'Framer Motion', 'i18n (German / English)', 'SEO'],
     featured: false,
+    caseStudy: {
+      problem: 'CleverPush’s design team produced a new Figma design for the marketing site. It had to be fast and responsive, run in German and English, and keep its content in a CMS rather than in code.',
+      built: 'I rebuilt the landing page and a new documentation page in Next.js and Tailwind CSS, with Framer Motion animations and Sanity as the CMS. I also built a custom-coded page inside the existing WordPress site. CleverPush later shelved the new site, so it is no longer live.',
+    },
   },
   {
     slug: 'xylothia',
     name: 'Xylothia',
     url: 'https://xylothia.vercel.app/',
-    description: 'Xylothia revolutionizes banking by seamlessly integrating traditional finance with the dynamic world of cryptocurrencies.',
-    stack: ['Next Js', 'Tailwind Css', 'Css', 'Framer motion', 'Hosting - Vercel'],
+    description: 'Marketing site for a hybrid neobank concept that bridges traditional banking and a crypto on-ramp, with Framer Motion animations.',
+    stack: ['Next.js', 'Tailwind CSS', 'Framer Motion', 'Vercel'],
     featured: false,
   },
   {
     slug: 'basekamp',
     name: 'BaseKamp',
     url: 'https://basekamp.co.uk/',
-    description: 'A comprehensive saloon booking and e-commerce system.',
-    stack: ['Node JS', 'React JS', 'Express JS', 'Mongodb', 'Socket.io', 'Redis', 'EJS', 'Hosting - Aws Ec2'],
+    description: 'Booking and e-commerce platform for a Manchester salon, with appointment scheduling, a shop and a café.',
+    stack: ['Node.js', 'React', 'Express', 'MongoDB', 'Socket.io', 'Redis', 'EJS', 'AWS EC2'],
     featured: false,
   },
   {
@@ -99,7 +103,7 @@ export const projects: Project[] = [
     url: 'https://www.hawrlearn.in/',
     description:
       'Website for Hawr Learn, a STEM education company running hands-on courses in robotics, coding, rocketry, drones and 3D printing for students and schools.',
-    stack: ['Node JS', 'Express JS', 'React JS', 'Mongodb', 'Hosting - Vercel'],
+    stack: ['Node.js', 'Express', 'React', 'MongoDB', 'Vercel'],
     featured: false,
   },
 ];

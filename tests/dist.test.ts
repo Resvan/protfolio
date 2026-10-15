@@ -45,11 +45,11 @@ describe.skipIf(!built)('dist/index.html', () => {
 describe.skipIf(!built)('other output', () => {
   it('never links to a retired project site', () => {
     const home = readFileSync('dist/index.html', 'utf8');
-    const study = readFileSync('dist/projects/cleverpush-landing/index.html', 'utf8');
-    for (const page of [home, study]) {
-      expect(page).not.toContain('href="https://landing.cleverpush.com/"');
-    }
-    expect(study).toContain('no longer live');
+    expect(home).not.toContain('href="https://landing.cleverpush.com/"');
+    expect(home).toContain('No longer live');
+  });
+  it('builds a case study for every featured project', () => {
+    for (const slug of ['meetxo', 'rentdigicare', 'ayurvedalayam']) expect(existsSync(`dist/projects/${slug}/index.html`)).toBe(true);
   });
   it('ships 404, manifest, CNAME and sitemap', () => {
     for (const f of ['dist/404.html', 'dist/manifest.webmanifest', 'dist/CNAME', 'dist/sitemap-index.xml', 'dist/sitemap-0.xml', 'dist/og/home.png']) {
