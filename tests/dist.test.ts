@@ -13,7 +13,7 @@ describe.skipIf(!built)('dist/index.html', () => {
     expect(d.querySelector('meta[property="og:title"]')!.getAttribute('content')).toBe(title);
     expect(d.querySelector('meta[name="twitter:title"]')!.getAttribute('content')).toBe(title);
     expect(d.querySelector('link[rel="canonical"]')!.getAttribute('href')).toBe('https://resvan.in/');
-    expect(d.querySelector('meta[property="og:image"]')!.getAttribute('content')).toMatch(/\.png$/);
+    expect(d.querySelector('meta[property="og:image"]')!.getAttribute('content')).toMatch(/\.jpg$/);
     expect(d.querySelector('meta[name="google-site-verification"]')).not.toBeNull();
   });
   it('has exactly one h1 and no loader', () => {
@@ -52,7 +52,7 @@ describe.skipIf(!built)('other output', () => {
     for (const slug of ['meetxo', 'rentdigicare', 'ayurvedalayam']) expect(existsSync(`dist/projects/${slug}/index.html`)).toBe(true);
   });
   it('ships 404, manifest, CNAME and sitemap', () => {
-    for (const f of ['dist/404.html', 'dist/manifest.webmanifest', 'dist/CNAME', 'dist/sitemap-index.xml', 'dist/sitemap-0.xml', 'dist/og/home.png']) {
+    for (const f of ['dist/404.html', 'dist/manifest.webmanifest', 'dist/CNAME', 'dist/sitemap-index.xml', 'dist/sitemap-0.xml', 'dist/og/home.jpg']) {
       expect(existsSync(f), f).toBe(true);
     }
   });

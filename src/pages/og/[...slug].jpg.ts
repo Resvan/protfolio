@@ -12,5 +12,5 @@ export const getStaticPaths = (() => [
 export const GET: APIRoute = async ({ props }) => {
   const png = await renderOg(props as { title: string; subtitle: string });
   // Uint8Array.from yields Uint8Array<ArrayBuffer>, which BodyInit accepts (ts 5.9 lib typing).
-  return new Response(Uint8Array.from(png), { headers: { 'Content-Type': 'image/png' } });
+  return new Response(Uint8Array.from(png), { headers: { 'Content-Type': 'image/jpeg' } });
 };
