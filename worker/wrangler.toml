@@ -1,0 +1,25 @@
+name = "resvan-chat"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+
+# Keep the account on the Workers Free plan: usage past the free allocation then fails instead of billing.
+[ai]
+binding = "AI"
+
+[vars]
+CONTEXT_URL = "https://resvan.in/chat-context.json"
+# Provisional; chosen by the evaluation in worker/eval.
+MODEL = "@cf/meta/llama-3.1-8b-instruct"
+MALAYALAM_REPLIES = "on"
+ALLOWED_ORIGINS = "https://resvan.in,http://localhost:4321,http://localhost:4329"
+
+# Burst guard on top of the in-code 20 requests / 10 minutes per IP (bindings only support 10 s or 60 s periods).
+[[ratelimits]]
+name = "RATE_LIMITER"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 10
+  period = 60
+
+# BLOCKED_TERMS is a secret: `npx wrangler secret put BLOCKED_TERMS --config worker/wrangler.toml`. Never commit its value.
