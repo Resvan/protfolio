@@ -4,6 +4,7 @@ import { site } from '../data/site';
 import { MESSAGE_MAX } from '../lib/validation';
 const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? '';
 const field = 'w-full border-0 border-b border-line bg-transparent px-0 py-3 text-step-1 text-fg placeholder:text-muted/50 focus:border-accent focus:outline-none focus-visible:outline-none aria-[invalid=true]:border-red-500';
+const phoneField = 'w-full min-w-0 border-0 bg-transparent py-3 pl-3 pr-0 text-step-1 text-fg placeholder:text-muted/50 focus:outline-none focus-visible:outline-none';
 const label = 'label block';
 const err = 'mt-1.5 text-step--1 text-red-500';
 ---
@@ -21,9 +22,20 @@ const err = 'mt-1.5 text-step--1 text-red-500';
     <input id="cf-email" name="email" type="email" class={field} required autocomplete="email" inputmode="email" aria-describedby="cf-email-error" />
     <p id="cf-email-error" class={err} aria-live="polite"></p>
   </div>
-  <div>
-    <label for="cf-phone" class={label}>Phone <span class="normal-case tracking-normal">(optional, any country)</span></label>
-    <input id="cf-phone" name="phone" type="tel" class={field} autocomplete="tel" inputmode="tel" placeholder="+31 6 1234 5678" aria-describedby="cf-phone-error" />
+  <div class="relative">
+    <label for="cf-phone" class={label}>Phone <span class="normal-case tracking-normal">(optional)</span></label>
+    <div class="flex items-center border-b border-line focus-within:border-accent has-[[aria-invalid=true]]:border-red-500">
+      <button type="button" id="cf-cc" class="flex shrink-0 items-center gap-2 border-r border-line py-3 pr-3 text-step-1 text-fg focus-visible:outline-2 focus-visible:outline-accent" aria-haspopup="listbox" aria-expanded="false" aria-controls="cf-cc-menu" aria-label="Country code: India +91">
+        <img id="cf-cc-flag" src="" alt="" width="20" height="15" class="h-[15px] w-5 rounded-[2px] object-cover" />
+        <span id="cf-cc-dial">+91</span>
+        <Icon name="lucide:chevron-down" class="size-4 text-muted" aria-hidden="true" />
+      </button>
+      <input id="cf-phone" name="phone" type="tel" class={phoneField} autocomplete="tel-national" inputmode="tel" placeholder="98765 43210" aria-describedby="cf-phone-error" />
+    </div>
+    <div id="cf-cc-menu" class="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-2xl hairline bg-surface shadow-xl sm:right-auto sm:w-80" hidden>
+      <input id="cf-cc-search" type="text" class="w-full border-0 hairline-b bg-transparent px-4 py-3 text-fg placeholder:text-muted focus:outline-none" placeholder="Search country or code…" autocomplete="off" role="combobox" aria-expanded="true" aria-controls="cf-cc-list" aria-autocomplete="list" aria-label="Search country or code" />
+      <ul id="cf-cc-list" role="listbox" aria-label="Country codes" class="max-h-72 overflow-y-auto py-1"></ul>
+    </div>
     <p id="cf-phone-error" class={err} aria-live="polite"></p>
   </div>
   <div>

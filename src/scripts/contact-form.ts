@@ -2,6 +2,8 @@ import { MESSAGE_MAX, validateEmail, validateMessage, validateName, validatePhon
 import { buildWhatsAppUrl } from '../lib/whatsapp';
 import { parseEndpointResponse } from '../lib/contact-response';
 import { escapeHtml } from '../lib/escape';
+import { formatPhone } from '../lib/phone';
+import { initPhonePicker } from './phone-picker';
 
 const form = document.getElementById('contact-form') as HTMLFormElement | null;
 if (form) {
@@ -11,10 +13,12 @@ if (form) {
   const submit = form.querySelector<HTMLButtonElement>('#cf-submit')!;
   const status = form.querySelector<HTMLElement>('#cf-status')!;
   const count = form.querySelector<HTMLElement>('#cf-message-count')!;
+  const picker = initPhonePicker();
+  const fullPhone = (local: string) => formatPhone(picker.iso(), local);
   const fields = {
     name: { el: form.elements.namedItem('name') as HTMLInputElement, check: validateName },
     email: { el: form.elements.namedItem('email') as HTMLInputElement, check: validateEmail },
-    phone: { el: form.elements.namedItem('phone') as HTMLInputElement, check: validatePhone },
+    phone: { el: form.elements.namedItem('phone') as HTMLInputElement, check: (v: string) => validatePhone(fullPhone(v)) },
     message: { el: form.elements.namedItem('message') as HTMLTextAreaElement, check: validateMessage },
   };
   type Key = keyof typeof fields;
@@ -77,6 +81,7 @@ if (form) {
     try {
       const body = new URLSearchParams();
       for (const [k, v] of new FormData(form)) if (typeof v === 'string') body.set(k, v);
+      body.set('phone', fullPhone(fields.phone.el.value));
       body.set('userAgent', navigator.userAgent);
       const res = await fetch(endpoint, { method: 'POST', body, redirect: 'follow' });
       const result = parseEndpointResponse(res.ok, await res.text());
