@@ -34,7 +34,7 @@ function makeContext() {
   return ctx as typeof ctx & { doPost: (e: unknown) => { text: string }; safeCell: (v: unknown) => unknown; validateSubmission: (p: Record<string, string>) => { ok: boolean; error?: string } };
 }
 const post = (c: Ctx, p: Record<string, string>) => JSON.parse(c.doPost({ parameter: p }).text);
-const good = { name: "Zoë O'Brien", email: 'zoe@example.com', phone: '+31 6 1234 5678', message: 'Hello there, I have a project.', website: '' };
+const good = { name: "Zoë O'Brien", email: 'zoe@example.com', phone: '+31 6 1234 5678', message: 'Hello there, I have a project.', website: '', userAgent: 'Mozilla/5.0' };
 
 let c: Ctx;
 beforeEach(() => { c = makeContext(); });
@@ -57,11 +57,25 @@ describe('validateSubmission', () => {
     expect(c.validateSubmission({ ...good, message: 'short' }).ok).toBe(false);
     expect(c.validateSubmission({ ...good, phone: '12345' }).ok).toBe(false);
   });
+  it('rejects messages containing links', () => {
+    for (const m of ['Earn money https://telegra.ph/x today', 'see http://spam.io now', 'visit WWW.spam.io please'])
+      expect(c.validateSubmission({ ...good, message: m })).toMatchObject({ ok: false, error: expect.stringMatching(/links/i) });
+    expect(c.validateSubmission({ ...good, message: 'I saw your site resvan.in, nice work.' }).ok).toBe(true);
+  });
 });
 
 describe('doPost', () => {
   it('rejects the honeypot silently with ok:false', () => {
     expect(post(c, { ...good, website: 'spam' })).toEqual({ ok: false, error: 'Rejected' });
+    expect(c.emails).toHaveLength(0);
+  });
+  it('rejects posts without a user agent (bots hitting the endpoint directly)', () => {
+    for (const ua of [undefined, '', '   ']) {
+      const p: Record<string, string> = { ...good };
+      if (ua === undefined) delete p.userAgent; else p.userAgent = ua;
+      expect(post(c, p)).toEqual({ ok: false, error: 'Rejected' });
+    }
+    expect(c.rows).toHaveLength(0);
     expect(c.emails).toHaveLength(0);
   });
   it('appends a row, emails with replyTo and pings CallMeBot', () => {

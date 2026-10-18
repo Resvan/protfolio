@@ -26,6 +26,7 @@ export function validateMessage(value: string): string | null {
   const len = value.trim().length;
   if (len < 10) return 'Please write at least 10 characters.';
   if (len > 2000) return 'Please keep it under 2000 characters.';
+  if (/https?:\/\/|www\./i.test(value)) return 'Please remove links from your message, or email me directly.';
   return null;
 }
 

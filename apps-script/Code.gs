@@ -15,6 +15,8 @@ function doPost(e) {
   try {
     var p = (e && e.parameter) || {};
     if (p.website) return json_({ ok: false, error: 'Rejected' });
+    // The site form always sends navigator.userAgent; bots posting straight to this URL don't.
+    if (!String(p.userAgent || '').trim()) return json_({ ok: false, error: 'Rejected' });
 
     var v = validateSubmission(p);
     if (!v.ok) return json_({ ok: false, error: v.error });
@@ -45,6 +47,7 @@ function validateSubmission(p) {
     if (digits < 7 || digits > 15) return { ok: false, error: 'Phone must have 7–15 digits.' };
   }
   if (message.length < 10 || message.length > 2000) return { ok: false, error: 'Message must be 10–2000 characters.' };
+  if (/https?:\/\/|www\./i.test(message)) return { ok: false, error: 'Please remove links from your message, or email me directly.' };
   return { ok: true, data: { name: name, email: email, phone: phone, message: message } };
 }
 

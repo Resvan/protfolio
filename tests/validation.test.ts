@@ -40,4 +40,9 @@ describe('validateMessage', () => {
     expect(validateMessage('this is ok ')).toBeNull();
     expect(validateMessage('x'.repeat(2001))).not.toBeNull();
   });
+  it('rejects links but allows bare domain mentions', () => {
+    expect(validateMessage('Earn money https://telegra.ph/x today')).toMatch(/links/i);
+    expect(validateMessage('visit www.spam.io please')).toMatch(/links/i);
+    expect(validateMessage('I saw your site resvan.in, nice work.')).toBeNull();
+  });
 });
