@@ -80,6 +80,14 @@ describe('POST /chat', () => {
     aiRun.mockImplementation(async () => sse(['Acme Energy.']));
     expect(await (await createWorker().fetch(ask(), env(), ctxArg)).text()).toBe(SAFE_FALLBACK);
   });
+  it('never sends an empty answer (e.g. a model that only streams reasoning)', async () => {
+    const enc = new TextEncoder();
+    const reasoningOnly = `data: ${JSON.stringify({ choices: [{ delta: { reasoning_content: 'thinking…' } }] })}\n\ndata: [DONE]\n\n`;
+    aiRun.mockImplementation(async () => new ReadableStream({ start(c) { c.enqueue(enc.encode(reasoningOnly)); c.close(); } }));
+    const text = await (await createWorker().fetch(ask(), env(), ctxArg)).text();
+    expect(text).not.toContain('thinking');
+    expect(text).toContain('[[contact]]');
+  });
   it('sends the server-built system prompt with stream and token cap', async () => {
     await (await createWorker().fetch(post({ messages: [{ role: 'user', content: 'hi' }] }), env(), ctxArg)).text();
     const [model, input] = aiRun.mock.calls[0];
@@ -141,6 +149,18 @@ describe('POST /chat', () => {
     await createWorker().fetch(ask('my secret question 12345'), env(), ctxArg);
     for (const s of spies) for (const call of s.mock.calls) expect(JSON.stringify(call)).not.toContain('12345');
     spies.forEach((s) => s.mockRestore());
+  });
+  it('logs why it is busy, without the visitor message', async () => {
+    const err = vi.spyOn(console, 'error').mockImplementation(() => {});
+    aiRun.mockImplementation(async () => { throw new Error('5016: model not found'); });
+    await createWorker().fetch(ask('private 98765'), env(), ctxArg);
+    fetchMock.mockImplementation(async () => new Response('down', { status: 502 }));
+    await createWorker().fetch(ask('private 98765'), env(), ctxArg);
+    const logged = JSON.stringify(err.mock.calls);
+    expect(logged).toContain('5016: model not found');
+    expect(logged).toContain('502');
+    expect(logged).not.toContain('98765');
+    err.mockRestore();
   });
   it('returns 404 for other paths', async () => {
     const res = await createWorker().fetch(new Request('https://chat.example/other', { method: 'POST', headers: { Origin: 'https://resvan.in' } }), env(), ctxArg);

@@ -9,7 +9,7 @@ binding = "AI"
 [vars]
 CONTEXT_URL = "https://resvan.in/chat-context.json"
 # Provisional; chosen by the evaluation in worker/eval.
-MODEL = "@cf/meta/llama-3.1-8b-instruct"
+MODEL = "@cf/mistralai/mistral-small-3.1-24b-instruct"
 MALAYALAM_REPLIES = "on"
 ALLOWED_ORIGINS = "https://resvan.in,http://localhost:4321,http://localhost:4329"
 

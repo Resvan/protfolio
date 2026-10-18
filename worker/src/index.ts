@@ -17,7 +17,7 @@ const RATE_LIMIT = 20;
 const RATE_WINDOW_MS = 10 * 60 * 1000;
 const MAX_TOKENS = 300;
 
-// Never log request bodies or answers: visitors are told chats are not stored.
+// Never log request bodies or answers: visitors are told chats are not stored. Only failure reasons are logged.
 export function createWorker() {
   let cached: { ctx: ChatContext; at: number } | null = null;
   const hits = new Map<string, number[]>();
@@ -26,10 +26,11 @@ export function createWorker() {
     if (cached && Date.now() - cached.at < CONTEXT_TTL_MS) return cached.ctx;
     try {
       const res = await fetch(url, { cf: { cacheTtl: 600 } } as RequestInit);
-      if (!res.ok) return null;
+      if (!res.ok) { console.error(`chat-context fetch failed: HTTP ${res.status}`); return null; }
       cached = { ctx: (await res.json()) as ChatContext, at: Date.now() };
       return cached.ctx;
-    } catch {
+    } catch (err) {
+      console.error(`chat-context fetch failed: ${(err as Error).message}`);
       return null;
     }
   }
@@ -74,7 +75,8 @@ export function createWorker() {
       let stream: ReadableStream<Uint8Array>;
       try {
         stream = (await env.AI.run(env.MODEL as Parameters<Ai['run']>[0], { messages, stream: true, max_tokens: MAX_TOKENS } as never)) as unknown as ReadableStream<Uint8Array>;
-      } catch {
+      } catch (err) {
+        console.error(`AI call failed: ${(err as Error).message}`);
         return json(503, 'busy');
       }
 
@@ -115,7 +117,8 @@ function answerText(terms: string[]): TransformStream<Uint8Array, Uint8Array> {
     flush(c) {
       emit(c, filter.push(textOf(pending + decoder.decode())));
       emit(c, filter.end());
-      if (filter.blocked) emit(c, (sentAny ? '\n\n' : '') + SAFE_FALLBACK);
+      // A blocked term, or a model that produced no answer text at all: never leave the visitor with nothing.
+      if (filter.blocked || !sentAny) emit(c, (sentAny ? '\n\n' : '') + SAFE_FALLBACK);
     },
   });
 }
