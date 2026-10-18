@@ -17,7 +17,7 @@ import avatar from '../assets/resvan-avatar.jpg';
       )}
       <h1 id="hero-title" class="mt-8 text-step-5">
         <span class="mb-5 flex items-center gap-3">
-          <Picture src={avatar} formats={['avif', 'webp']} widths={[96, 144]} sizes="48px" alt="" class="size-12 rounded-full object-cover lg:hidden" loading="eager" />
+          <Picture src={avatar} formats={['avif', 'webp']} quality={80} widths={[96, 144]} sizes="48px" alt="" class="size-12 rounded-full object-cover lg:hidden" loading="eager" />
           <span class="label text-[0.8rem] normal-case tracking-[0.08em] text-fg">{site.name}</span>
         </span>
         Building <em>fast, accessible</em> web &amp; mobile products.
@@ -39,6 +39,7 @@ import avatar from '../assets/resvan-avatar.jpg';
           <Picture
             src={photo}
             formats={['avif', 'webp']}
+            quality={80}
             widths={[400, 600, 800, 1000]}
             sizes="(min-width: 1024px) 28rem, 85vw"
             alt="Portrait of Muhammed Resvan K"
