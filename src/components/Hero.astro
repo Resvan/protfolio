@@ -3,6 +3,8 @@ import { Picture } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
 import { site } from '../data/site';
 import photo from '../assets/resvan.jpg';
+import ChatAskBar from './ChatAskBar.astro';
+const chatEnabled = Boolean(import.meta.env.PUBLIC_CHAT_ENDPOINT);
 import avatar from '../assets/resvan-avatar.jpg';
 ---
 <section id="hero" class="relative overflow-hidden" aria-labelledby="hero-title">
@@ -31,6 +33,7 @@ import avatar from '../assets/resvan-avatar.jpg';
         </a>
         <a href="#contact" class="inline-flex items-center gap-2 rounded-full hairline px-6 py-3.5 text-step-0 font-medium text-fg transition-colors hover:bg-surface">Contact me</a>
       </div>
+      {chatEnabled && <ChatAskBar />}
     </div>
 
     <div class="relative mx-auto hidden w-full max-w-sm lg:block lg:max-w-md">

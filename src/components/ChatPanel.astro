@@ -1,0 +1,61 @@
+---
+import { Icon } from 'astro-icon/components';
+import { site } from '../data/site';
+const endpoint = import.meta.env.PUBLIC_CHAT_ENDPOINT ?? '';
+const chips = ['What has he built?', 'Does he know React Native?', 'How can I hire him?'];
+const iconBtn = 'inline-flex size-9 items-center justify-center rounded-full text-muted transition-colors hover:bg-bg hover:text-fg aria-pressed:text-accent';
+---
+<div
+  id="chat-panel"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="chat-panel-title"
+  data-endpoint={endpoint}
+  data-whatsapp={site.whatsapp}
+  class="fixed inset-x-0 bottom-0 z-50 flex h-[85dvh] flex-col overflow-hidden rounded-t-3xl hairline bg-surface shadow-2xl sm:inset-x-auto sm:bottom-24 sm:right-5 sm:h-[min(640px,calc(100dvh-8rem))] sm:w-[380px] sm:rounded-3xl"
+  hidden
+>
+  <div class="flex items-center gap-1 hairline-b px-4 py-3">
+    <h2 id="chat-panel-title" class="flex-1 text-step-0 font-medium text-fg">Ask about Resvan</h2>
+    <button type="button" id="chat-speaker" class={iconBtn} aria-pressed="false" aria-label="Read answers aloud">
+      <Icon name="lucide:volume-2" class="size-4" aria-hidden="true" />
+    </button>
+    <button type="button" id="chat-close" class={iconBtn} aria-label="Close chat">
+      <Icon name="lucide:x" class="size-5" aria-hidden="true" />
+    </button>
+  </div>
+
+  <div id="chat-log" class="flex-1 space-y-3 overflow-y-auto px-4 py-4 text-step--1" aria-live="polite">
+    <p class="chat-bot max-w-[85%] rounded-2xl rounded-bl-md bg-bg px-3.5 py-2.5 text-fg">Hi! Ask me about Resvan's experience, projects, skills or how to work with him.</p>
+    <div id="chat-chips" class="flex flex-wrap gap-2">
+      {chips.map((c) => <button type="button" data-chat-chip class="rounded-full hairline px-3 py-1.5 text-step--1 text-fg transition-colors hover:bg-bg">{c}</button>)}
+    </div>
+  </div>
+
+  <form id="chat-form" class="flex items-center gap-1.5 hairline-t px-3 py-3">
+    <button type="button" id="chat-lang" class="inline-flex h-9 min-w-9 items-center justify-center rounded-full px-2 text-step--1 font-medium text-muted hairline" aria-label="Voice language: English" title="Voice language" hidden>EN</button>
+    <label for="chat-input" class="sr-only">Your question</label>
+    <input id="chat-input" type="text" maxlength="500" autocomplete="off" placeholder="Type or tap the mic…" class="min-w-0 flex-1 rounded-full bg-bg px-4 py-2.5 text-step--1 text-fg placeholder:text-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
+    <button type="button" id="chat-mic" class={iconBtn} aria-pressed="false" aria-label="Ask by voice" hidden>
+      <Icon name="lucide:mic" class="size-5" aria-hidden="true" />
+    </button>
+    <button type="submit" id="chat-send" class="inline-flex size-9 items-center justify-center rounded-full bg-fg text-bg disabled:opacity-50" aria-label="Send">
+      <Icon name="lucide:arrow-up" class="size-5" aria-hidden="true" />
+    </button>
+  </form>
+  <p class="px-4 pb-3 text-[0.7rem] leading-snug text-muted">Answers are AI-generated from this site. Chats are processed by Cloudflare and not stored or used for training.</p>
+
+  <template id="chat-busy-tpl">
+    <div class="chat-bot max-w-[85%] space-y-2 rounded-2xl rounded-bl-md bg-bg px-3.5 py-2.5 text-fg">
+      <p>Chat is busy right now — use the contact form or WhatsApp.</p>
+      <div class="flex flex-wrap gap-2">
+        <button type="button" data-chat-contact class="rounded-full bg-fg px-3 py-1.5 text-step--1 font-medium text-bg">Contact form</button>
+        <a href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener noreferrer" class="rounded-full hairline px-3 py-1.5 text-step--1 text-fg">WhatsApp</a>
+      </div>
+    </div>
+  </template>
+  <template id="chat-contact-tpl">
+    <button type="button" data-chat-contact class="mt-2 block rounded-full bg-fg px-3 py-1.5 text-step--1 font-medium text-bg">Contact form</button>
+  </template>
+</div>
+<script src="../scripts/chat-boot.ts"></script>

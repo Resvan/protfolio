@@ -1,0 +1,12 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+<form id="chat-askbar" class="mt-8 flex w-full max-w-xl items-center gap-2 rounded-full hairline bg-surface/60 py-1.5 pl-5 pr-1.5 transition-colors focus-within:border-accent motion-reduce:transition-none" aria-label="Ask the AI about Resvan" hidden>
+  <Icon name="lucide:sparkles" class="size-4 shrink-0 text-accent" aria-hidden="true" />
+  <label for="chat-askbar-input" class="sr-only">Ask anything about my work</label>
+  <input id="chat-askbar-input" name="q" type="text" maxlength="500" autocomplete="off" placeholder="Ask anything about my work…" class="min-w-0 flex-1 bg-transparent py-2 text-step-0 text-fg placeholder:text-muted focus:outline-none" />
+  <button type="button" id="chat-askbar-mic" class="inline-flex size-10 shrink-0 items-center justify-center rounded-full text-muted transition-colors hover:text-fg" aria-label="Ask by voice" hidden>
+    <Icon name="lucide:mic" class="size-5" aria-hidden="true" />
+  </button>
+  <button type="submit" class="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-fg px-4 py-2 text-step--1 font-medium text-bg">Ask</button>
+</form>

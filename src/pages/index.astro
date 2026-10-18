@@ -9,12 +9,15 @@ import Services from '../components/Services.astro';
 import Work from '../components/Work.astro';
 import Contact from '../components/Contact.astro';
 import WhatsAppFab from '../components/WhatsAppFab.astro';
+import ChatFab from '../components/ChatFab.astro';
+import ChatPanel from '../components/ChatPanel.astro';
 import Footer from '../components/Footer.astro';
 import JsonLd from '../components/JsonLd.astro';
 import { site } from '../data/site';
 import { projects } from '../data/projects';
 import photo from '../assets/resvan.jpg';
 
+const chatEnabled = Boolean(import.meta.env.PUBLIC_CHAT_ENDPOINT);
 const img = await getImage({ src: photo, width: 800, format: 'jpg' });
 const imageUrl = new URL(img.src, site.url).href;
 const graph = [
@@ -46,5 +49,7 @@ const graph = [
   </main>
   <Footer />
   <WhatsAppFab />
+  {chatEnabled && <ChatFab />}
+  {chatEnabled && <ChatPanel />}
   <script src="../scripts/reveal.ts"></script>
 </BaseLayout>
