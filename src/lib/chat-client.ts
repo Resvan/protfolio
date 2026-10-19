@@ -15,7 +15,7 @@ export interface Chat {
 export const MAX_INPUT = 500;
 const MAX_TURNS = 6;
 const MARKER = '[[contact]]';
-const MARKER_RE = /\[\[contact\]\]/g;
+const MARKER_RE = /\s*\[\[contact\]\]/g;
 /** Hold back enough characters that a half-received marker is never shown. */
 const HOLD = MARKER.length - 1;
 
@@ -56,7 +56,8 @@ export function createChat(endpoint: string, fetchImpl: typeof fetch = fetch): C
           if (done) break;
           raw += decoder.decode(value, { stream: true });
           const v = visible();
-          const cut = v.length - HOLD;
+          // Trailing spaces wait for the next character: they may be followed by the marker.
+          const cut = v.slice(0, Math.max(0, v.length - HOLD)).trimEnd().length;
           if (cut > shown) { on.delta(v.slice(shown, cut)); shown = cut; }
         }
       } catch {

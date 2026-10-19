@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { buildChatContext } from '../src/lib/chat-context';
 import { experience } from '../src/data/experience';
 import { projects } from '../src/data/projects';
+import { computeFacts } from '../src/lib/facts';
 
 describe('buildChatContext', () => {
   const ctx = buildChatContext();
@@ -12,8 +13,9 @@ describe('buildChatContext', () => {
     expect(ctx.person.location).toBe('Kerala, India · open to remote');
   });
 
-  it('keeps every experience entry in order', () => {
-    expect(ctx.experience.map((e) => `${e.company}|${e.title}`)).toEqual(experience.map((e) => `${e.company}|${e.title}`));
+  it('keeps every job in order', () => {
+    const jobs = experience.filter((e) => e.kind !== 'training');
+    expect(ctx.experience.map((e) => `${e.company}|${e.title}`)).toEqual(jobs.map((e) => `${e.company}|${e.title}`));
   });
 
   it('links featured projects to their case study page only', () => {
@@ -22,6 +24,16 @@ describe('buildChatContext', () => {
       if (p.featured) expect(c.page).toBe(`/projects/${p.slug}/`);
       else expect(c.page).toBeUndefined();
     }
+  });
+
+  it('includes the same headline facts as the About section', () => {
+    const f = computeFacts(experience, projects.length);
+    expect(ctx.facts).toEqual({ yearsExperience: `${f.years}+`, companies: f.companies, projects: f.projects });
+  });
+
+  it('marks training separately from jobs', () => {
+    expect(ctx.experience.every((e) => e.kind === 'job')).toBe(true);
+    expect(ctx.training.map((t) => t.company)).toEqual(experience.filter((e) => e.kind === 'training').map((e) => e.company));
   });
 
   it('leaves out site plumbing', () => {

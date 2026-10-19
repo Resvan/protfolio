@@ -16,6 +16,8 @@ const CONTEXT_TTL_MS = 10 * 60 * 1000;
 const RATE_LIMIT = 20;
 const RATE_WINDOW_MS = 10 * 60 * 1000;
 const MAX_TOKENS = 300;
+/** Malayalam script costs several times more tokens for the same answer. */
+const MAX_TOKENS_ML = 700;
 
 // Never log request bodies or answers: visitors are told chats are not stored. Only failure reasons are logged.
 export function createWorker() {
@@ -71,10 +73,12 @@ export function createWorker() {
       if (!context) return json(503, 'busy');
 
       const question = valid.messages[valid.messages.length - 1].content;
-      const messages = buildMessages(context, valid.messages, { replyLang: detectLanguage(question), malayalamReplies: env.MALAYALAM_REPLIES === 'on' });
+      const opts = { replyLang: detectLanguage(question), malayalamReplies: env.MALAYALAM_REPLIES === 'on' };
+      const messages = buildMessages(context, valid.messages, opts);
+      const maxTokens = opts.replyLang === 'ml' && opts.malayalamReplies ? MAX_TOKENS_ML : MAX_TOKENS;
       let stream: ReadableStream<Uint8Array>;
       try {
-        stream = (await env.AI.run(env.MODEL as Parameters<Ai['run']>[0], { messages, stream: true, max_tokens: MAX_TOKENS } as never)) as unknown as ReadableStream<Uint8Array>;
+        stream = (await env.AI.run(env.MODEL as Parameters<Ai['run']>[0], { messages, stream: true, max_tokens: maxTokens } as never)) as unknown as ReadableStream<Uint8Array>;
       } catch (err) {
         console.error(`AI call failed: ${(err as Error).message}`);
         return json(503, 'busy');

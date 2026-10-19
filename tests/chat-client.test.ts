@@ -44,6 +44,14 @@ describe('createChat', () => {
     expect(chat.messages[1]).toMatchObject({ content: 'Best discussed directly.', contact: true });
   });
 
+  it('removes the marker together with the space before it', async () => {
+    const chat = createChat('https://chat.test', async () => streamed(['Please use the contact form [[contact]].']));
+    const h = handlers();
+    await chat.send('Salary?', h);
+    expect(chat.messages[1].content).toBe('Please use the contact form.');
+    expect(h.delta.mock.calls.map((c) => c[0]).join('')).toBe('Please use the contact form.');
+  });
+
   it('sends at most the last 6 turns and truncates long input to 500 characters', async () => {
     const fetchImpl = vi.fn(async () => streamed(['ok']));
     const chat = createChat('https://chat.test', fetchImpl);

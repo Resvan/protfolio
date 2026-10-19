@@ -3,17 +3,23 @@ import { experience } from '../data/experience';
 import { projects } from '../data/projects';
 import { skillGroups } from '../data/skills';
 import { services } from '../data/services';
+import { computeFacts } from './facts';
 
 /** Everything the chatbot may say about Resvan. Served as /chat-context.json for the Worker. */
 export interface ChatContext {
   person: { name: string; title: string; location: string; remote: boolean; freelance: boolean; email: string; whatsappDisplay: string; socials: Record<string, string> };
-  experience: { company: string; title: string; start: string; end: string | null; kind: 'job' | 'training'; highlights: string[] }[];
+  /** Precomputed so the model never does date arithmetic; same numbers as the About section. */
+  facts: { yearsExperience: string; companies: number; projects: number };
+  experience: { company: string; title: string; start: string; end: string | null; kind: 'job'; highlights: string[] }[];
+  /** Courses and programmes; not employment. */
+  training: { company: string; title: string; start: string; end: string | null }[];
   projects: { name: string; url: string; live: boolean; description: string; stack: string[]; caseStudy?: { problem: string; built: string }; page?: string }[];
   skills: { name: string; items: string[] }[];
   services: { title: string; summary: string }[];
 }
 
 export function buildChatContext(): ChatContext {
+  const facts = computeFacts(experience, projects.length);
   return {
     person: {
       name: site.name,
@@ -25,7 +31,9 @@ export function buildChatContext(): ChatContext {
       whatsappDisplay: site.whatsappDisplay,
       socials: { ...site.socials },
     },
-    experience: experience.map((j) => ({ company: j.company, title: j.title, start: j.start, end: j.end, kind: j.kind ?? 'job', highlights: j.highlights })),
+    facts: { yearsExperience: `${facts.years}+`, companies: facts.companies, projects: facts.projects },
+    experience: experience.filter((j) => j.kind !== 'training').map((j) => ({ company: j.company, title: j.title, start: j.start, end: j.end, kind: 'job' as const, highlights: j.highlights })),
+    training: experience.filter((j) => j.kind === 'training').map((j) => ({ company: j.company, title: j.title, start: j.start, end: j.end })),
     projects: projects.map((p) => ({
       name: p.name,
       url: p.url,

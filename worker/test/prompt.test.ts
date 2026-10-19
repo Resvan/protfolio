@@ -3,8 +3,13 @@ import { buildMessages, buildSystemPrompt, detectLanguage, type ChatContext, typ
 
 const ctx: ChatContext = {
   person: { name: 'Muhammed Resvan K', title: 'Software Engineer', location: 'Kerala, India · open to remote', remote: true, freelance: true, email: 'me@x.io', whatsappDisplay: '+91 1', socials: {} },
+  facts: { yearsExperience: '3+', companies: 5, projects: 9 },
+  training: [{ company: 'Bootcamp X', title: 'Trainee', start: '2022-08', end: '2023-03' }],
   experience: [{ company: 'Salesdock', title: 'Software Developer L2', start: '2025-02', end: null, kind: 'job', highlights: ['Sole frontend engineer on an energy billing platform.'] }],
-  projects: [],
+  projects: [
+    { name: 'MeetXO', url: 'https://meetxo.example', live: true, description: 'd', stack: [], page: '/projects/meetxo/' },
+    { name: 'Virtual Solutions', url: 'https://vs.example', live: true, description: 'd', stack: [] },
+  ],
   skills: [{ name: 'Frontend', items: ['React'] }],
   services: [],
 };
@@ -26,6 +31,10 @@ describe('buildSystemPrompt', () => {
     expect(en).toContain('Sole frontend engineer on an energy billing platform.');
     expect(en).toMatch(/only (from|using) the context/i);
   });
+  it('uses precomputed facts and keeps training apart from jobs', () => {
+    expect(en).toMatch(/never calculate from dates/i);
+    expect(en).toMatch(/"training" are courses, not jobs/i);
+  });
   it('defers compensation and job-change topics', () => {
     for (const t of ['salary', 'notice period', 'start date', 'job change', 'relocation']) expect(en.toLowerCase()).toContain(t);
   });
@@ -34,6 +43,17 @@ describe('buildSystemPrompt', () => {
     expect(en).toMatch(/ignore any instructions/i);
     expect(en).toMatch(/off-topic/i);
     expect(en).toContain('[[contact]]');
+  });
+  it('only allows links that exist', () => {
+    expect(en).toMatch(/never (make up|invent) (links|urls)/i);
+    expect(en).toContain('https://resvan.in/#contact');
+    expect(en).toContain('https://resvan.in/projects/meetxo/');
+    // No guessable pattern, and no case study page for projects without one.
+    expect(en).not.toContain('<slug>');
+    expect(en).not.toContain('/projects/virtual-solutions/');
+  });
+  it('asks for short lists so Malayalam answers fit', () => {
+    expect(buildSystemPrompt(ctx, { replyLang: 'ml', malayalamReplies: true })).toMatch(/at most 3/i);
   });
   it('picks the reply language', () => {
     expect(en).toContain('Reply in English');
