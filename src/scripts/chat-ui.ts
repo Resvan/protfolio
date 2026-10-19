@@ -52,15 +52,19 @@ function linkify(el: HTMLElement) {
   }
 }
 
+// Read-only rather than disabled: disabling the focused input would push focus out of the dialog
+// (breaking Esc and the focus trap). Extra sends are blocked by chat.busy in ask().
 function setBusy(busy: boolean) {
-  input.disabled = send.disabled = busy;
-  chips.querySelectorAll('button').forEach((b) => { b.disabled = busy; });
-  if (!busy) input.focus();
+  input.readOnly = busy;
+  input.setAttribute('aria-disabled', String(busy));
+  send.setAttribute('aria-disabled', String(busy));
+  send.classList.toggle('opacity-50', busy);
 }
 
 async function ask(text: string, viaMic = false) {
   const q = text.trim();
   if (!q || chat.busy) return;
+  input.focus(); // a clicked chip is about to be hidden; keep focus inside the dialog
   chips.hidden = true;
   bubble('user', q.slice(0, 500));
   const answer = bubble('bot');

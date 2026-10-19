@@ -33,7 +33,8 @@ export function createChat(endpoint: string, fetchImpl: typeof fetch = fetch): C
     busy = true;
     messages.push({ role: 'user', content });
     notify();
-    const history = messages.slice(-MAX_TURNS).map(({ role, content }) => ({ role, content }));
+    // Failed or empty answers would be rejected by the Worker and break every later question.
+    const history = messages.filter((m) => !m.failed && m.content).slice(-MAX_TURNS).map(({ role, content }) => ({ role, content }));
 
     let raw = '';
     let shown = 0;

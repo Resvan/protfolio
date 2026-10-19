@@ -13,13 +13,13 @@ MODEL = "@cf/mistralai/mistral-small-3.1-24b-instruct"
 MALAYALAM_REPLIES = "on"
 ALLOWED_ORIGINS = "https://resvan.in,http://localhost:4321,http://localhost:4329"
 
-# Burst guard on top of the in-code 20 requests / 10 minutes per IP (bindings only support 10 s or 60 s periods).
+# Per-IP limit across instances (bindings only support 10 s or 60 s periods). The in-code 20 / 10 min window is per instance, so best-effort.
 [[ratelimits]]
 name = "RATE_LIMITER"
 namespace_id = "1001"
 
   [ratelimits.simple]
-  limit = 10
+  limit = 5
   period = 60
 
 # BLOCKED_TERMS is a secret: `npx wrangler secret put BLOCKED_TERMS --config worker/wrangler.toml`. Never commit its value.

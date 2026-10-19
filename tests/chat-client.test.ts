@@ -109,6 +109,17 @@ describe('createChat', () => {
     expect(chat.busy).toBe(false);
   });
 
+  it('leaves failed and empty answers out of the history it sends', async () => {
+    let call = 0;
+    const fetchImpl = vi.fn(async () => (call++ === 0 ? streamed([], 0) : streamed(['ok'])));
+    const chat = createChat('https://chat.test', fetchImpl);
+    await chat.send('first', handlers());
+    await chat.send('second', handlers());
+    const body = JSON.parse((fetchImpl.mock.calls[1] as unknown as [string, RequestInit])[1].body as string);
+    expect(body.messages.every((m: { content: string }) => m.content.length > 0)).toBe(true);
+    expect(body.messages.filter((m: { role: string }) => m.role === 'assistant')).toHaveLength(0);
+  });
+
   it('notifies subscribers on changes', async () => {
     const chat = createChat('https://chat.test', async () => streamed(['ok']));
     const fn = vi.fn();

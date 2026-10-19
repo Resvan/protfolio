@@ -7,3 +7,5 @@ dist
 .DS_Store
 .superpowers/
 .wrangler/
+# wrangler dev reads local secrets from here; never commit them
+.dev.vars*

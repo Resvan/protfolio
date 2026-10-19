@@ -48,5 +48,13 @@ export function buildSystemPrompt(ctx: ChatContext, opts: PromptOptions): string
 }
 
 export function buildMessages(ctx: ChatContext, history: ChatMessage[], opts: PromptOptions): { role: 'system' | 'user' | 'assistant'; content: string }[] {
-  return [{ role: 'system', content: buildSystemPrompt(ctx, opts) }, ...history.slice(-MAX_TURNS)];
+  // Some chat templates require user-first, strictly alternating turns: drop leading answers, merge repeats.
+  const turns: ChatMessage[] = [];
+  for (const m of history.slice(-MAX_TURNS)) {
+    if (!turns.length && m.role === 'assistant') continue;
+    const last = turns[turns.length - 1];
+    if (last?.role === m.role) last.content += `\n\n${m.content}`;
+    else turns.push({ ...m });
+  }
+  return [{ role: 'system', content: buildSystemPrompt(ctx, opts) }, ...turns];
 }

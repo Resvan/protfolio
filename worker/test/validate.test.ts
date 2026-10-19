@@ -17,6 +17,11 @@ describe('validateBody', () => {
     expect(validateBody({ messages: [{ role: 'user', content: 'x'.repeat(501) }] }).ok).toBe(false);
     expect(validateBody({ messages: [{ role: 'user', content: '   ' }] }).ok).toBe(false);
   });
+  it('allows long assistant answers but keeps visitor turns at 500 characters', () => {
+    const long = { messages: [{ role: 'user', content: 'What has he built?' }, { role: 'assistant', content: 'x'.repeat(900) }, { role: 'user', content: 'More?' }] };
+    expect(validateBody(long).ok).toBe(true);
+    expect(validateBody({ messages: [{ role: 'user', content: 'q' }, { role: 'assistant', content: 'x'.repeat(4001) }, { role: 'user', content: 'q' }] }).ok).toBe(false);
+  });
   it('requires the last message to be from the user', () => {
     expect(validateBody({ messages: [{ role: 'user', content: 'hi' }, { role: 'assistant', content: 'hello' }] }).ok).toBe(false);
   });

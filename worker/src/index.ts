@@ -85,6 +85,7 @@ export function createWorker() {
       }
 
       const terms = (env.BLOCKED_TERMS ?? '').split(',');
+      if (!terms.some((t) => t.trim())) console.error('BLOCKED_TERMS not set: the client-name filter is off');
       return new Response(stream.pipeThrough(answerText(terms)), {
         headers: { ...cors, 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' },
       });

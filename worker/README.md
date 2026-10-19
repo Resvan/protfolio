@@ -19,7 +19,17 @@ calls the model in `MODEL`, and filters the output against `BLOCKED_TERMS`. It n
 
 `BLOCKED_TERMS`: comma-separated words the bot must never output. Set or rotate it with
 `npx wrangler secret put BLOCKED_TERMS --config worker/wrangler.toml` and type the value at the prompt.
-Never put the value in this repo, in tests, or in chat transcripts.
+Never put the value in this repo, in tests, or in chat transcripts. Include common variants: the Malayalam-script spelling
+and any short or product names (spacing, hyphens and letter case are already ignored by the filter).
+If the secret is missing the Worker logs `BLOCKED_TERMS not set` and the filter is off; check with `npx wrangler secret list`.
+For `wrangler dev`, local secrets go in `worker/.dev.vars`, which is git-ignored. Do not run the eval
+(`worker/eval/run.mjs`) against a Worker without the secret, because its output is committed.
+
+## Limits
+
+Each IP may send 5 questions a minute (Cloudflare rate-limit binding) plus a best-effort 20 per 10 minutes per instance.
+On the Free plan, someone determined can still use up the daily AI allocation; the chat then says it is busy until the
+next day, and nothing is billed.
 
 ## Settings (`wrangler.toml` vars)
 

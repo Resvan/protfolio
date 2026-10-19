@@ -69,10 +69,21 @@ describe('buildSystemPrompt', () => {
 });
 
 describe('buildMessages', () => {
+  it('starts with a user turn after the system prompt and alternates roles', () => {
+    const history: ChatMessage[] = [
+      { role: 'user', content: 'q1' }, { role: 'assistant', content: 'a1' }, { role: 'user', content: 'q2' },
+      { role: 'assistant', content: 'a2' }, { role: 'user', content: 'q3' }, { role: 'user', content: 'q4' },
+    ];
+    const out = buildMessages(ctx, [{ role: 'assistant', content: 'a0' }, ...history], { replyLang: 'en', malayalamReplies: true });
+    expect(out[1].role).toBe('user');
+    for (let i = 2; i < out.length; i++) expect(out[i].role).not.toBe(out[i - 1].role);
+    expect(out.at(-1)).toEqual({ role: 'user', content: 'q3\n\nq4' });
+  });
   it('puts the system prompt first and keeps only the last 6 turns', () => {
     const history: ChatMessage[] = Array.from({ length: 9 }, (_, i) => ({ role: i % 2 ? 'assistant' : 'user', content: `m${i}` }));
     const out = buildMessages(ctx, history, { replyLang: 'en', malayalamReplies: true });
     expect(out[0].role).toBe('system');
-    expect(out.slice(1).map((m) => m.content)).toEqual(['m3', 'm4', 'm5', 'm6', 'm7', 'm8']);
+    // The last 6 turns start with an assistant turn (m3), which is dropped so the model sees user first.
+    expect(out.slice(1).map((m) => m.content)).toEqual(['m4', 'm5', 'm6', 'm7', 'm8']);
   });
 });

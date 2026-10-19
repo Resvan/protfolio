@@ -166,6 +166,12 @@ describe('POST /chat', () => {
     expect(logged).not.toContain('98765');
     err.mockRestore();
   });
+  it('warns when the blocked-terms secret is missing', async () => {
+    const err = vi.spyOn(console, 'error').mockImplementation(() => {});
+    await (await createWorker().fetch(ask(), { ...env(), BLOCKED_TERMS: '' }, ctxArg)).text();
+    expect(JSON.stringify(err.mock.calls)).toContain('BLOCKED_TERMS not set');
+    err.mockRestore();
+  });
   it('returns 404 for other paths', async () => {
     const res = await createWorker().fetch(new Request('https://chat.example/other', { method: 'POST', headers: { Origin: 'https://resvan.in' } }), env(), ctxArg);
     expect(res.status).toBe(404);
