@@ -31,9 +31,10 @@ describe('buildChatContext', () => {
     expect(ctx.facts).toEqual({ yearsExperience: `${f.years}+`, companies: f.companies, projects: f.projects });
   });
 
-  it('marks training separately from jobs', () => {
-    expect(ctx.experience.every((e) => e.kind === 'job')).toBe(true);
-    expect(ctx.training.map((t) => t.company)).toEqual(experience.filter((e) => e.kind === 'training').map((e) => e.company));
+  it('leaves training out entirely, so it can never be listed as an employer', () => {
+    const json = JSON.stringify(ctx);
+    for (const t of experience.filter((e) => e.kind === 'training')) expect(json).not.toContain(t.company);
+    expect(ctx).not.toHaveProperty('training');
   });
 
   it('leaves out site plumbing', () => {
