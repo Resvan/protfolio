@@ -50,6 +50,12 @@ describe('buildSystemPrompt', () => {
     expect(en).not.toContain('<slug>');
     expect(en).not.toContain('/projects/virtual-solutions/');
   });
+  it('gives Malayalam replies the right loanword for notice period', () => {
+    expect(buildSystemPrompt(ctx, { replyLang: 'ml', malayalamReplies: true })).toContain('നോട്ടീസ് പീരിയഡ്');
+  });
+  it('declines only the topic that was asked about', () => {
+    expect(en).toMatch(/mention only the topic (that was )?asked about/i);
+  });
   it('asks for short lists so Malayalam answers fit', () => {
     expect(buildSystemPrompt(ctx, { replyLang: 'ml', malayalamReplies: true })).toMatch(/at most 3/i);
   });
