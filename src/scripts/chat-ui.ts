@@ -78,6 +78,7 @@ async function ask(text: string, viaMic = false) {
       answer.removeAttribute('aria-busy');
       linkify(answer);
       if (contact) answer.append(contactTpl.content.cloneNode(true));
+      log.scrollTop = log.scrollHeight; // linkify and the button change the height
       const spoken = answer.textContent ?? '';
       if (readAloud === true || (readAloud === null && viaMic)) speak(spoken.replace(/Contact form$/, ''), isMalayalam(spoken) ? 'ml' : 'en');
     },
