@@ -26,7 +26,7 @@ const image = getProjectImage(project.slug);
         <a href={`/projects/${project.slug}/`} class="inline-flex items-center gap-2 text-fg">Case study <Icon name="lucide:arrow-right" class="size-4" aria-hidden="true" /></a>
         {project.live !== false
           ? <a href={project.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-muted hover:text-fg">Live site <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
-          : <span class="inline-flex items-center gap-2 text-muted">No longer live</span>}
+          : !project.playStoreUrl && <span class="inline-flex items-center gap-2 text-muted">No longer live</span>}
         {project.playStoreUrl && <a href={project.playStoreUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-muted hover:text-fg">Android app <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>}
       </div>
     </div>

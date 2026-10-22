@@ -56,8 +56,10 @@ const graph = [
         <ul class="mt-4 space-y-2 font-display text-step-1">{project.stack.map((s) => <li>{s}</li>)}</ul>
         {project.live !== false
           ? <a href={project.url} target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full bg-fg px-5 py-3 font-medium text-bg transition-transform hover:-translate-y-0.5 motion-reduce:transition-none">Visit live site <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
-          : <p class="mt-8 text-muted">This site is no longer live.</p>}
-        {project.playStoreUrl && <a href={project.playStoreUrl} target="_blank" rel="noopener noreferrer" class="mt-3 flex w-fit items-center gap-2 rounded-full hairline px-5 py-3 font-medium text-fg transition-colors hover:bg-surface-2">Get the Android app <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>}
+          : project.playStoreUrl
+            ? <a href={project.playStoreUrl} target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-2 rounded-full bg-fg px-5 py-3 font-medium text-bg transition-transform hover:-translate-y-0.5 motion-reduce:transition-none">Get the Android app <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
+            : <p class="mt-8 text-muted">This site is no longer live.</p>}
+        {project.live !== false && project.playStoreUrl && <a href={project.playStoreUrl} target="_blank" rel="noopener noreferrer" class="mt-3 flex w-fit items-center gap-2 rounded-full hairline px-5 py-3 font-medium text-fg transition-colors hover:bg-surface-2">Get the Android app <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>}
       </aside>
     </div>
   </main>

@@ -5,7 +5,7 @@ export interface Project {
   description: string;
   stack: string[];
   featured: boolean;
-  /** false when the site has been taken down; hides the live link. */
+  /** false when there is no public website to link (taken down, or app-only); hides the live link. */
   live?: boolean;
   /** Google Play listing, when the product also ships as an Android app. */
   playStoreUrl?: string;
@@ -29,15 +29,16 @@ export const projects: Project[] = [
   {
     slug: 'meetxo',
     name: 'MeetXO',
-    url: 'https://meetxo-frontend-nextjs-res.vercel.app/',
+    url: 'https://www.meetxo.ai/',
+    live: false,
     playStoreUrl: 'https://play.google.com/store/apps/details?id=com.app.meetxo',
     description:
-      'Freelance build of an expert consultation platform: discovery, profiles, booking with calendar availability, events, OTP sign-in and Razorpay payments.',
-    stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'NextAuth', 'Razorpay', 'Node.js', 'MongoDB'],
+      'Freelance build of an expert consultation platform: discovery, profiles, booking with calendar availability, events, OTP sign-in and Razorpay payments. It ships on the web and as an Android app on Google Play.',
+    stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'PWA', 'Capacitor (Android)', 'NextAuth', 'Razorpay', 'Node.js', 'MongoDB'],
     featured: true,
     caseStudy: {
       problem: 'Experts, coaches and mentors needed one place to sell their time: a personal profile page, bookable one-to-one video sessions and events, and payments handled for them.',
-      built: 'I built most of the Next.js frontend: the home page, expert discovery by category, expert profiles and the booking flow with calendar availability. I also built OTP sign-in with NextAuth, Razorpay payments, event creation and booking, profile image cropping, bookings history, transactions and KYC, and made backend fixes in Node.js where features needed them.',
+      built: 'I built most of the Next.js frontend: the home page, expert discovery by category, expert profiles and the booking flow with calendar availability. I also built OTP sign-in with NextAuth, Razorpay payments, event creation and booking, profile image cropping, bookings history, transactions and KYC, and made backend fixes in Node.js where features needed them. I then turned the web app into a PWA and packaged it as an Android app with Capacitor, which is live on Google Play.',
     },
   },
   {
