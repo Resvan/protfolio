@@ -7,6 +7,8 @@ export interface Project {
   featured: boolean;
   /** false when the site has been taken down; hides the live link. */
   live?: boolean;
+  /** Google Play listing, when the product also ships as an Android app. */
+  playStoreUrl?: string;
   /** Case-study copy; only used when featured. */
   caseStudy?: { problem: string; built: string };
 }
@@ -28,6 +30,7 @@ export const projects: Project[] = [
     slug: 'meetxo',
     name: 'MeetXO',
     url: 'https://meetxo-frontend-nextjs-res.vercel.app/',
+    playStoreUrl: 'https://play.google.com/store/apps/details?id=com.app.meetxo',
     description:
       'Freelance build of an expert consultation platform: discovery, profiles, booking with calendar availability, events, OTP sign-in and Razorpay payments.',
     stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'NextAuth', 'Razorpay', 'Node.js', 'MongoDB'],

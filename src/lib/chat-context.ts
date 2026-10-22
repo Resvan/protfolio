@@ -12,7 +12,7 @@ export interface ChatContext {
   facts: { yearsExperience: string; companies: number; projects: number };
   /** Jobs only: training entries are left out so the model can never present them as employers. */
   experience: { company: string; title: string; start: string; end: string | null; kind: 'job'; highlights: string[] }[];
-  projects: { name: string; url: string; live: boolean; description: string; stack: string[]; caseStudy?: { problem: string; built: string }; page?: string }[];
+  projects: { name: string; url: string; live: boolean; playStoreUrl?: string; description: string; stack: string[]; caseStudy?: { problem: string; built: string }; page?: string }[];
   skills: { name: string; items: string[] }[];
   services: { title: string; summary: string }[];
 }
@@ -36,6 +36,7 @@ export function buildChatContext(): ChatContext {
       name: p.name,
       url: p.url,
       live: p.live ?? true,
+      ...(p.playStoreUrl ? { playStoreUrl: p.playStoreUrl } : {}),
       description: p.description,
       stack: p.stack,
       ...(p.featured ? { caseStudy: p.caseStudy, page: `/projects/${p.slug}/` } : {}),
