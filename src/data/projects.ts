@@ -12,6 +12,19 @@ export interface Project {
 }
 export const projects: Project[] = [
   {
+    slug: 'turnly',
+    name: 'Turnly',
+    url: 'https://queue.resvan.in/',
+    description:
+      'My own queue app for clinics and salons: customers keep their place on their phone, staff call the next person with one key, and the waiting-room TV and every phone update in under a second.',
+    stack: ['Next.js', 'React', 'TypeScript', 'Fastify', 'PostgreSQL', 'Redis', 'WebSockets', 'Web Push', 'Playwright'],
+    featured: true,
+    caseStudy: {
+      problem: 'Clinic waiting rooms in Kerala run on paper tokens and shouting names. People can’t step out without losing their place, staff lose track of who has arrived, and nobody knows how long the wait really is. I wanted to build a production-grade product end to end, to the standard I would expect from a real SaaS team.',
+      built: 'I designed and built all of it. Customers join by scanning a QR code and follow their place live on a page that loads under 160 KB, in English or Malayalam, with a push alert when their turn is near. Staff run a keyboard-first console, a TV screen announces each call, and owners get an insights dashboard. Under the hood, Postgres row locks with SKIP LOCKED stop two counters from calling the same person, an append-only event log drives realtime updates over WebSockets, and errors and uptime are monitored. It is covered by unit, integration and Playwright tests, and runs on a $0 hosting stack.',
+    },
+  },
+  {
     slug: 'meetxo',
     name: 'MeetXO',
     url: 'https://meetxo-frontend-nextjs-res.vercel.app/',

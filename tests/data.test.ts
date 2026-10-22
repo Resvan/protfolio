@@ -14,10 +14,10 @@ describe('site identity', () => {
 });
 
 describe('projects', () => {
-  it('has 9 projects, 3 featured, unique slugs, https links', () => {
-    expect(projects).toHaveLength(9);
-    expect(projects.filter((p) => p.featured)).toHaveLength(3);
-    expect(new Set(projects.map((p) => p.slug)).size).toBe(9);
+  it('has 10 projects, 4 featured, unique slugs, https links', () => {
+    expect(projects).toHaveLength(10);
+    expect(projects.filter((p) => p.featured)).toHaveLength(4);
+    expect(new Set(projects.map((p) => p.slug)).size).toBe(projects.length);
     for (const p of projects) expect(p.url).toMatch(/^https:\/\//);
   });
   it('fixes the Xylothia link', () => {

@@ -49,7 +49,7 @@ describe.skipIf(!built)('other output', () => {
     expect(home).toContain('No longer live');
   });
   it('builds a case study for every featured project', () => {
-    for (const slug of ['meetxo', 'rentdigicare', 'ayurvedalayam']) expect(existsSync(`dist/projects/${slug}/index.html`)).toBe(true);
+    for (const slug of ['turnly', 'meetxo', 'rentdigicare', 'ayurvedalayam']) expect(existsSync(`dist/projects/${slug}/index.html`)).toBe(true);
   });
   it('ships 404, manifest, CNAME and sitemap', () => {
     for (const f of ['dist/404.html', 'dist/manifest.webmanifest', 'dist/CNAME', 'dist/sitemap-index.xml', 'dist/sitemap-0.xml', 'dist/og/home.jpg']) {
