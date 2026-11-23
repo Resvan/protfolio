@@ -6,8 +6,8 @@ export interface Job {
   end: string | null; // null = present
   note?: string;
   highlights: string[];
-  /** 'training' entries are excluded from the years/companies facts. */
-  kind?: 'job' | 'training';
+  /** 'training' entries are excluded from the years/companies facts; 'freelance' client work is excluded from the companies count. */
+  kind?: 'job' | 'freelance' | 'training';
 }
 export const experience: Job[] = [
   {
@@ -20,7 +20,7 @@ export const experience: Job[] = [
     ],
   },
   {
-    company: 'Freelance', url: null, title: 'Web Developer', start: '2024-08', end: '2025-04',
+    company: 'Freelance', url: null, title: 'Web Developer', start: '2024-08', end: '2025-04', kind: 'freelance',
     highlights: [
       'MeetXO (Jan–Apr 2025): built most of the frontend for an expert consultation platform where coaches and mentors sell one-to-one video sessions and events. Covered discovery, profiles, booking with calendar availability, OTP sign-in, Razorpay payments, transactions and KYC, plus backend fixes in Node.js (Next.js, TypeScript, MongoDB).',
       'Virtual Solutions (Aug–Dec 2024): built the website for a Saudi transport and logistics company, in English and Arabic with a right-to-left layout, covering its services, quote requests, careers and contact pages (Next.js, Tailwind CSS, Framer Motion).',

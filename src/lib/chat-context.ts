@@ -11,7 +11,7 @@ export interface ChatContext {
   /** Precomputed so the model never does date arithmetic; same numbers as the About section. */
   facts: { yearsExperience: string; companies: number; projects: number };
   /** Jobs only: training entries are left out so the model can never present them as employers. */
-  experience: { company: string; title: string; start: string; end: string | null; kind: 'job'; highlights: string[] }[];
+  experience: { company: string; title: string; start: string; end: string | null; kind: 'job' | 'freelance'; highlights: string[] }[];
   projects: { name: string; url: string; live: boolean; playStoreUrl?: string; description: string; stack: string[]; caseStudy?: { problem: string; built: string }; page?: string }[];
   skills: { name: string; items: string[] }[];
   services: { title: string; summary: string }[];
@@ -31,7 +31,7 @@ export function buildChatContext(): ChatContext {
       socials: { ...site.socials },
     },
     facts: { yearsExperience: `${facts.years}+`, companies: facts.companies, projects: facts.projects },
-    experience: experience.filter((j) => j.kind !== 'training').map((j) => ({ company: j.company, title: j.title, start: j.start, end: j.end, kind: 'job' as const, highlights: j.highlights })),
+    experience: experience.filter((j) => j.kind !== 'training').map((j) => ({ company: j.company, title: j.title, start: j.start, end: j.end, kind: j.kind === 'freelance' ? ('freelance' as const) : ('job' as const), highlights: j.highlights })),
     projects: projects.map((p) => ({
       name: p.name,
       url: p.url,

@@ -6,6 +6,7 @@ const jobs: Job[] = [
   { company: 'A', url: null, title: 'Dev', start: '2025-02', end: null, highlights: [] },
   { company: 'B', url: null, title: 'Dev', start: '2023-05', end: '2023-09', highlights: [] },
   { company: 'School', url: null, title: 'Trainee', start: '2022-08', end: '2023-03', highlights: [], kind: 'training' },
+  { company: 'Freelance', url: null, title: 'Web Developer', start: '2024-08', end: '2025-04', highlights: [], kind: 'freelance' },
 ];
 
 describe('computeFacts', () => {
@@ -13,7 +14,7 @@ describe('computeFacts', () => {
     expect(computeFacts(jobs, 8, new Date('2026-10-12')).years).toBe(3);
     expect(computeFacts(jobs, 8, new Date('2026-04-30')).years).toBe(2);
   });
-  it('counts companies excluding training and passes the project count through', () => {
+  it('counts companies excluding training and freelance client work, and passes the project count through', () => {
     const f = computeFacts(jobs, 8, new Date('2026-10-12'));
     expect(f.companies).toBe(2);
     expect(f.projects).toBe(8);
